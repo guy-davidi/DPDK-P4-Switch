@@ -14,6 +14,6 @@ pipeline PIPELINE0 port in 1 link LINK1 rxq 0 bsz 32
 pipeline PIPELINE0 port out 0 link LINK0 txq 0 bsz 32
 pipeline PIPELINE0 port out 1 link LINK1 txq 0 bsz 32
 
-pipeline PIPELINE0 build ./l2fwd.spec
+pipeline PIPELINE0 build ./l3.spec
 
 thread 1 pipeline PIPELINE0 enable
