@@ -4,7 +4,7 @@ In this repo we will present how to configure DPDK pipeline by a P4 program.
 
 ```sudo su
 cd  ~/p4_project
- sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
+sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 ```
 
 # In order to connect DPDK app cli 
