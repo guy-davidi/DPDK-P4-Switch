@@ -72,7 +72,7 @@ Tables:
                 Action set_port_and_src_mac (packets): 0
 ```
 
-# Install
+# Install Pipeline APP
 
 ```cd /home/user/dpdk-p4-work/examples/pipeline/examples
 /home/user/dpdk-p4-work/examples/pipeline
