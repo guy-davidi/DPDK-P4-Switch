@@ -82,7 +82,7 @@ make
 
 # DPDK's uses NICs, Bind DPDK driver to device
 ```
-cd /home/user/dpdk-p4-work/usertools
+cd /home/user/dpdk/usertools
 sudo ./dpdk-devbind.py -b vfio-pci 0000:03:00.0
 sudo ./dpdk-devbind.py -b vfio-pci 0000:07:00.0
 ```
@@ -101,5 +101,6 @@ chmod 755 ./scripts/p4cinstall.sh
 
 # DPDK installation:
 ```
+chmod 755 ./scripts/dpdk_install.sh
 ./scripts/dpdk_install.sh
 ```
