@@ -8,13 +8,13 @@ cd  ~/p4_project
 sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 ```
 
-# In order to connect DPDK app cli 
+# In order to connect ti DPDK app cli (run from a different terminal)
 ```
 telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
 
-# Telnet output
+# Showing the stats of the pipeline - output 
 ```
 pipeline> pipeline PIPELINE0 stats
 Input ports:
@@ -73,15 +73,14 @@ Tables:
                 Action set_port_and_src_mac (packets): 0
 ```
 
-# Install Pipeline APP
+# build DPDK's Pipeline APP
 
-```cd /home/user/dpdk-p4-work/examples/pipeline/examples
-/home/user/dpdk-p4-work/examples/pipeline
+```cd /home/user/dpdk/examples/pipeline
 mkdir build
 make
 ```
 
-# Bind DPDK driver to device
+# DPDK's uses NICs, Bind DPDK driver to device
 ```
 cd /home/user/dpdk-p4-work/usertools
 sudo ./dpdk-devbind.py -b vfio-pci 0000:03:00.0
@@ -89,15 +88,18 @@ sudo ./dpdk-devbind.py -b vfio-pci 0000:07:00.0
 ```
  
 
-# Compilation .P4 -> .spec by
+# Compilation l2fwd.P4 -> l2fwd.spec (which DPDK's pipeline uses)
 ```
-cd sudo su
-cd /home/user/dpdk-p4-work/build/examples
-p4c-dpdk --arch psa my_l2fed.p4 -o my_l2fed.spec 
+p4c-dpdk --arch psa l2fwd.p4 -o l2fwd.spec 
 ```
 
 # In order to install P4 compiller - p4c_install.sh
 ```
+chmod 755 ./scripts/p4cinstall.sh
 ./p4c_install.sh
 ```
 
+# DPDK installation:
+```
+./scripts/dpdk_install.sh
+```
