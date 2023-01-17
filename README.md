@@ -96,7 +96,7 @@ p4c-dpdk --arch psa l2fwd.p4 -o l2fwd.spec
 # In order to install P4 compiller - p4c_install.sh
 ```
 chmod 755 ./scripts/p4cinstall.sh
-./p4c_install.sh
+./scripts/p4c_install.sh
 ```
 
 # DPDK installation:
