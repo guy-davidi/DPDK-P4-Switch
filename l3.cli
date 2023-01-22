@@ -3,8 +3,8 @@
 
 mempool MEMPOOL0 buffer 2304 pool 32K cache 256 cpu 0
 
-link LINK0 dev 0000:03:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on
-link LINK1 dev 0000:07:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on
+link LINK0 dev 0000:01:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on
+link LINK1 dev 0000:05:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on
 
 pipeline PIPELINE0 create 0
 
