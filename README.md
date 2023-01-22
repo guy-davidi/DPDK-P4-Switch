@@ -17,7 +17,7 @@ pipeline PIPELINE0 stats
 # Showing the stats of the pipeline - output 
 ```
 pipeline> pipeline PIPELINE0 stats
-Input ports:
+~Input ports:
         Port 0: packets 0 bytes 0 empty 973379348
         Port 1: packets 592 bytes 35520 empty 973378809
 
