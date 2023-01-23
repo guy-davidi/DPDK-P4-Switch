@@ -1,4 +1,4 @@
-# In order to install P4 compiller - p4c_install.sh
+# In order to install P4 compiller - p4c_install.sh ⚡
 ```
 chmod 755 ./scripts/p4cinstall.sh
 ./scripts/p4c_install.sh
@@ -57,7 +57,7 @@ telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
 
-# Showing the stats of the pipeline - output 
+# Showing the stats of the pipeline - output ⚡
 ```
 pipeline> pipeline PIPELINE0 stats
 Input ports:
