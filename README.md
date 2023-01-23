@@ -57,6 +57,7 @@ telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
 
+
 # Showing the stats of the pipeline - output ⚡
 ```
 pipeline> pipeline PIPELINE0 stats
