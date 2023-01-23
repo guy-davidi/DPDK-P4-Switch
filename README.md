@@ -11,7 +11,6 @@ chmod 755 ./scripts/dpdk_install.sh
 ```
 
 # build DPDK's Pipeline APP 💬
-
 ```cd /home/user/dpdk/examples/pipeline
 mkdir build
 make
@@ -32,9 +31,10 @@ p4c-dpdk --arch psa l2fwd.p4 -o l2fwd.spec
 # DPDK Pipeline using P4 ⚡
 In this repo we will present how to configure DPDK pipeline by a P4 program.
 ![image](https://user-images.githubusercontent.com/64970907/212545978-e11ded03-e092-4abd-94c5-0908ecac8ed8.png)
-# In order run l2fwd (example) ⚡
 
-```sudo su
+# In order run l2fwd (example) ⚡
+```
+sudo su
 cd  ~/p4_project
 sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 ```
