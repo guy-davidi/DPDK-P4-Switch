@@ -44,32 +44,37 @@ sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
+# In order to add table entries
+# Last must be call to 'commit
+```
+pipeline PIPELINE0 stats
+pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
+pipeline PIPELINE0 commit
+```
+
+```
+telnet 0.0.0.0 8086
+pipeline PIPELINE0 stats
+```
 
 # Showing the stats of the pipeline - output 
 ```
-<>@*:~/projects/p4_project$ make test
-telnet 0.0.0.0 8086
-Trying 0.0.0.0...
-Connected to 0.0.0.0.
-Escape character is '^]'.
-
-Welcome!
-
 pipeline> pipeline PIPELINE0 stats
 Input ports:
-        Port 0: packets 24784136 bytes 1487048160 empty 1416896714
-        Port 1: packets 400 bytes 24000 empty 1441680541
+        Port 0: packets 1084289984 bytes 65057399040 empty 1986758197
+        Port 1: packets 700 bytes 42000 empty 3071047502
 
 Output ports:
         Port 0: packets 0 bytes 0 clone 0 clonerr 0
         Port 1: packets 0 bytes 0 clone 0 clonerr 0
-        DROP: packets 24784536 bytes 1140080656 clone 0 clonerr 0
+        DROP: packets 1084290705 bytes 28191558330 clone 0 clonerr 0
 
 Tables:
         Table ipv4_host:
-                Hit (packets): 0
-                Miss (packets): 24784536
+                Hit (packets): 700
+                Miss (packets): 1084290024
                 Action NoAction (packets): 0
-                Action send (packets): 0
-                Action drop_1 (packets): 24784536
+                Action send (packets): 700
+                Action drop_1 (packets): 1084290024
+
 ```
