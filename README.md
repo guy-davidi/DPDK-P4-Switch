@@ -44,10 +44,10 @@ sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
-# In order to add table entries
-# Last must be call to 'commit' ⚡
+# In order to add table entries last must be call to 'commit' ⚡
 ```
 pipeline PIPELINE0 stats
+
 pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
 pipeline PIPELINE0 commit
 ```
@@ -76,5 +76,6 @@ Tables:
                 Action NoAction (packets): 0
                 Action send (packets): 700
                 Action drop_1 (packets): 1084290024
+
 
 ```
