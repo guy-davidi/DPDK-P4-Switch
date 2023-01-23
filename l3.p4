@@ -1,17 +1,8 @@
-/* -*- P4_16 -*- */
-
 #include <core.p4>
 #include <psa.p4>
 
-/*************************************************************************
- ************* C O N S T A N T S    A N D   T Y P E S  *******************
-**************************************************************************/
 const bit<16> ETHERTYPE_TPID = 0x8100;
 const bit<16> ETHERTYPE_IPV4 = 0x0800;
-
-/*************************************************************************
- ***********************  H E A D E R S  *********************************
- *************************************************************************/
 
 /*  Define all the headers the program will recognize             */
 /*  The actual sets of headers processed by each gress can differ */
@@ -45,19 +36,11 @@ const int IPV4_HOST_SIZE = 65536;
 
 typedef bit<48> ethernet_addr_t;
 
-/*************************************************************************
- **************  I N G R E S S   P R O C E S S I N G   *******************
- *************************************************************************/
-
-	/***********************  H E A D E R S  ************************/
-
 struct my_ingress_headers_t {
 	ethernet_h   ethernet;
 	vlan_tag_h   vlan_tag;
 	ipv4_h       ipv4;
 }
-
-	/******  G L O B A L   I N G R E S S   M E T A D A T A  *********/
 
 struct my_ingress_metadata_t {
 }
@@ -65,7 +48,6 @@ struct my_ingress_metadata_t {
 struct empty_metadata_t {
 }
 
-	/***********************  P A R S E R  **************************/
 parser Ingress_Parser(
 	packet_in pkt,
 	out my_ingress_headers_t hdr,
@@ -101,8 +83,6 @@ parser Ingress_Parser(
 	}
 
 }
-
-	/***************** M A T C H - A C T I O N  *********************/
 
 control ingress(
 	inout my_ingress_headers_t hdr,
@@ -146,8 +126,6 @@ control ingress(
 	}
 }
 
-	/*********************  D E P A R S E R  ************************/
-
 control Ingress_Deparser(packet_out pkt,
 	out empty_metadata_t clone_i2e_meta,
 	out empty_metadata_t resubmit_meta,
@@ -161,22 +139,11 @@ control Ingress_Deparser(packet_out pkt,
 	}
 }
 
-
-/*************************************************************************
- ****************  E G R E S S   P R O C E S S I N G   *******************
- *************************************************************************/
-
-	/***********************  H E A D E R S  ************************/
-
 struct my_egress_headers_t {
 }
 
-	/********  G L O B A L   E G R E S S   M E T A D A T A  *********/
-
 struct my_egress_metadata_t {
 }
-
-	/***********************  P A R S E R  **************************/
 
 parser Egress_Parser(
 	packet_in pkt,
@@ -192,8 +159,6 @@ parser Egress_Parser(
 	}
 }
 
-	/***************** M A T C H - A C T I O N  *********************/
-
 control egress(
 	inout my_egress_headers_t hdr,
 	inout my_ingress_metadata_t meta,
@@ -203,8 +168,6 @@ control egress(
 	apply {
 	}
 }
-
-	/*********************  D E P A R S E R  ************************/
 
 control Egress_Deparser(packet_out pkt,
 	out empty_metadata_t clone_e2e_meta,
@@ -222,8 +185,6 @@ control Egress_Deparser(packet_out pkt,
 #if __p4c__
 bit<32> test_version = __p4c_version__;
 #endif
-
-/************ F I N A L   P A C K A G E ******************************/
 
 IngressPipeline(Ingress_Parser(), ingress(), Ingress_Deparser()) pipe;
 
