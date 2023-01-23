@@ -108,13 +108,32 @@ control ingress(
 	in psa_ingress_input_metadata_t ig_intr_md,
 	inout psa_ingress_output_metadata_t ostd)
 {
+	action switch_port(PortId_t port) {
+		send_to_port(ostd, port);
+	}
+
+	action drop() {
+		ostd.drop = true;
+	}
+
+	table l2_fwd {
+		key = {
+				ig_intr_md.ingress_port: exact;
+		}
+		actions = {
+				switch_port; drop;
+		}
+	}
 
 	apply {
-		if(ig_intr_md.ingress_port == (PortId_t)0) {
+		/*if(ig_intr_md.ingress_port == (PortId_t)0) {
 			ostd.egress_port = (PortId_t)1;
-		} else {
+			/*meta.priority = 1;*/
+		/*} else {
 			ostd.egress_port = (PortId_t)0;
-		}
+			meta.priority = 0;
+		}*/
+		l2_fwd.apply();
 	}
 }
 	/*********************  D E P A R S E R  ************************/

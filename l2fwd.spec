@@ -43,6 +43,10 @@ struct psa_egress_deparser_input_metadata_t {
 	bit<32> egress_port
 }
 
+struct switch_port_arg_t {
+	bit<32> port
+}
+
 header ethernet instanceof ethernet_h
 header vlan_tag instanceof vlan_tag_h
 header ipv4 instanceof ipv4_h
@@ -50,9 +54,40 @@ header ipv4 instanceof ipv4_h
 struct my_ingress_metadata_t {
 	bit<32> psa_ingress_input_metadata_ingress_port
 	bit<8> psa_ingress_output_metadata_drop
+	bit<32> psa_ingress_output_metadata_multicast_group
 	bit<32> psa_ingress_output_metadata_egress_port
 }
 metadata instanceof my_ingress_metadata_t
+
+action NoAction args none {
+	return
+}
+
+action switch_port args instanceof switch_port_arg_t {
+	mov m.psa_ingress_output_metadata_drop 0
+	mov m.psa_ingress_output_metadata_multicast_group 0x0
+	mov m.psa_ingress_output_metadata_egress_port t.port
+	return
+}
+
+action drop_1 args none {
+	mov m.psa_ingress_output_metadata_drop 1
+	return
+}
+
+table l2_fwd {
+	key {
+		m.psa_ingress_input_metadata_ingress_port exact
+	}
+	actions {
+		switch_port
+		drop_1
+		NoAction
+	}
+	default_action NoAction args none 
+	size 0x10000
+}
+
 
 apply {
 	rx m.psa_ingress_input_metadata_ingress_port
@@ -65,11 +100,8 @@ apply {
 	jmpeq INGRESS_PARSER_PARSE_IPV4 h.vlan_tag.ether_type 0x800
 	jmp INGRESS_PARSER_ACCEPT
 	INGRESS_PARSER_PARSE_IPV4 :	extract h.ipv4
-	INGRESS_PARSER_ACCEPT :	jmpneq LABEL_FALSE m.psa_ingress_input_metadata_ingress_port 0x0
-	mov m.psa_ingress_output_metadata_egress_port 0x1
-	jmp LABEL_END
-	LABEL_FALSE :	mov m.psa_ingress_output_metadata_egress_port 0x0
-	LABEL_END :	jmpneq LABEL_DROP m.psa_ingress_output_metadata_drop 0x0
+	INGRESS_PARSER_ACCEPT :	table l2_fwd
+	jmpneq LABEL_DROP m.psa_ingress_output_metadata_drop 0x0
 	emit h.ethernet
 	emit h.vlan_tag
 	emit h.ipv4
