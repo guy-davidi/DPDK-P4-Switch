@@ -17,3 +17,7 @@ pipeline PIPELINE0 port out 1 link LINK1 txq 0 bsz 32
 pipeline PIPELINE0 build ./l3.spec
 
 thread 1 pipeline PIPELINE0 enable
+
+pipeline PIPELINE0 stats
+pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
+pipeline PIPELINE0 commit
