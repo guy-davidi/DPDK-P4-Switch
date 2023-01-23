@@ -1,16 +1,16 @@
-all: l2fwd.spec
+all: l3.spec
 .PHONY : all
 
 CC = p4c-dpdk
 CFLAGS = --arch psa
 
-l2fwd.spec: l2fwd.p4
-	$(CC) $(CFLAGS) l2fwd.p4 -o l2fwd.spec
+l3.spec: l3.p4
+	$(CC) $(CFLAGS) l3.p4 -o l3.spec
 
 .PHONY : run
 run: 
 	cd  ~/projects/p4_project
-	sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
+	sudo ./dpdk-pipeline -c 0x3 -- -s l3.cli
 
 .PHONY : test
 test: 
@@ -18,4 +18,4 @@ test:
 
 .PHONY : clean
 clean:
-	\rm l2fwd.spec
+	\rm l3.spec

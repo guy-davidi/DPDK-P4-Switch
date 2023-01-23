@@ -111,6 +111,7 @@ control ingress(
 	inout psa_ingress_output_metadata_t ostd
 )
 {
+	/* If got match -> egress to port 1 else drop */
 	action send(PortId_t port) {
 		ostd.egress_port = (PortId_t) port;
 	}
@@ -118,6 +119,14 @@ control ingress(
 	action drop() {
 		ostd.drop = true;
 	}
+	
+	action set_port_and_src_mac( PortId_t port,
+                                 ethernet_addr_t src_mac,
+                                 ethernet_addr_t dst_mac) {
+	send_to_port(ostd, port);
+        hdr.ethernet.src_addr = src_mac;
+        hdr.ethernet.dst_addr = dst_mac;
+    }
 
 	table ipv4_host {
 		key = { hdr.ipv4.dst_addr : exact; }
