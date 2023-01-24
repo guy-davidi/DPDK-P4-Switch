@@ -50,6 +50,11 @@ pipeline PIPELINE0 stats
 pipeline PIPELINE0 stats
 pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
 pipeline PIPELINE0 commit
+pipeline PIPELINE0 table ipv4_host show
+# Table ipv4_host: key size 4 bytes, key offset 16, key mask [ffffffff], action data size 4 bytes
+match 0a000000 priority 0 action send 01000000
+match 0b652b58 priority 0 action send 00000000
+# Table ipv4_host currently has 2 entries.
 ```
 
 ```
@@ -76,5 +81,4 @@ Tables:
                 Action NoAction (packets): 0
                 Action send (packets): 700
                 Action drop_1 (packets): 1084290024
-
 ```

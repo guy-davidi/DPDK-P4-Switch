@@ -21,3 +21,4 @@ thread 1 pipeline PIPELINE0 enable
 pipeline PIPELINE0 stats
 pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
 pipeline PIPELINE0 commit
+pipeline PIPELINE0 table ipv4_host show

@@ -115,7 +115,7 @@ control ingress(
 			@defaultonly NoAction;
 		}
 
-		const default_action = drop();
+		const default_action = NoAction();
 
 		size = IPV4_HOST_SIZE;
 	}

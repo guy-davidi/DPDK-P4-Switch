@@ -81,7 +81,7 @@ table ipv4_host {
 		drop_1
 		NoAction
 	}
-	default_action drop_1 args none const
+	default_action NoAction args none const
 	size 0x10000
 }
 
