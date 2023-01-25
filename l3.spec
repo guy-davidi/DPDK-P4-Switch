@@ -68,7 +68,7 @@ action send args instanceof send_arg_t {
 }
 
 action drop_1 args none {
-	mov m.psa_ingress_output_metadata_drop 1
+	mov m.psa_ingress_output_metadata_drop 0
 	return
 }
 

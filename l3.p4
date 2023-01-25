@@ -43,6 +43,8 @@ struct my_ingress_headers_t {
 }
 
 struct my_ingress_metadata_t {
+	//bit<32> port_in;
+	//bit<32> port_out;
 }
 
 struct empty_metadata_t {
@@ -96,8 +98,12 @@ control ingress(
 		ostd.egress_port = (PortId_t) port;
 	}
 
+	/* This is workaround due to probably p4c-dpdk bug.
+	 * Details can be see here: https://github.com/p4lang/p4c/issues/3861
+	 * This line need to be "ostd.drop = true;"
+	 */
 	action drop() {
-		ostd.drop = true;
+		ostd.drop = false;
 	}
 	
 	action set_port_and_src_mac( PortId_t port,
