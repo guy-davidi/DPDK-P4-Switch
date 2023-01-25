@@ -31,7 +31,7 @@ p4c-dpdk --arch psa l2fwd.p4 -o l2fwd.spec
 
 # DPDK Pipeline using P4 ⚡
 In this repo we will present how to configure DPDK pipeline by a P4 program.
-![image](https://user-images.githubusercontent.com/64970907/212545978-e11ded03-e092-4abd-94c5-0908ecac8ed8.png)
+![image](https://user-images.githubusercontent.com/64970907/214503555-7d9b67ef-5f27-4496-85f8-c8ab4b815507.png)
 
 # In order run l2fwd (example) ⚡
 ```
