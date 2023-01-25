@@ -45,6 +45,7 @@ struct psa_egress_deparser_input_metadata_t {
 
 struct send_arg_t {
 	bit<32> port
+	bit<8> class
 }
 
 header ethernet instanceof ethernet_h
@@ -53,6 +54,7 @@ header ipv4 instanceof ipv4_h
 
 struct my_ingress_metadata_t {
 	bit<32> psa_ingress_input_metadata_ingress_port
+	bit<8> psa_ingress_output_metadata_class_of_service
 	bit<8> psa_ingress_output_metadata_drop
 	bit<32> psa_ingress_output_metadata_egress_port
 }
@@ -65,6 +67,7 @@ action NoAction args none {
 action send args instanceof send_arg_t {
 	mov m.psa_ingress_output_metadata_egress_port t.port
 	mov m.psa_ingress_output_metadata_drop 0
+	mov m.psa_ingress_output_metadata_class_of_service t.class
 	return
 }
 

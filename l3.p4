@@ -4,9 +4,9 @@
 const bit<16> ETHERTYPE_TPID = 0x8100;
 const bit<16> ETHERTYPE_IPV4 = 0x0800;
 
-/*  Define all the headers the program will recognize             */
-/*  The actual sets of headers processed by each gress can differ */
-
+/* Define all the headers the program will recognize
+ * The actual sets of headers processed by each gress can differ
+ */
 /* Standard ethernet header */
 header ethernet_h {
 	bit<48>   dst_addr;
@@ -93,10 +93,13 @@ control ingress(
 	inout psa_ingress_output_metadata_t ostd
 )
 {
-	/* If got match -> egress to port 1 else drop */
-	action send(PortId_t port) {
+	/* If got match -> egress to port 1 else drop 
+	 *
+	 */
+	action send(PortId_t port, ClassOfService_t class) {
 		ostd.egress_port = (PortId_t) port;
 		ostd.drop = false;
+		ostd.class_of_service = (ClassOfService_t) class;
 	}
 
 	/* This is workaround due to probably p4c-dpdk bug.
@@ -108,12 +111,12 @@ control ingress(
 	}
 	
 	action set_port_and_src_mac( PortId_t port,
-                                 ethernet_addr_t src_mac,
-                                 ethernet_addr_t dst_mac) {
+								 ethernet_addr_t src_mac,
+								 ethernet_addr_t dst_mac) {
 	send_to_port(ostd, port);
-        hdr.ethernet.src_addr = src_mac;
-        hdr.ethernet.dst_addr = dst_mac;
-    }
+		hdr.ethernet.src_addr = src_mac;
+		hdr.ethernet.dst_addr = dst_mac;
+	}
 
 	table ipv4_host {
 		key = { hdr.ipv4.dst_addr : exact; }
