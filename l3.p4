@@ -96,6 +96,7 @@ control ingress(
 	/* If got match -> egress to port 1 else drop */
 	action send(PortId_t port) {
 		ostd.egress_port = (PortId_t) port;
+		ostd.drop = false;
 	}
 
 	/* This is workaround due to probably p4c-dpdk bug.
@@ -103,7 +104,7 @@ control ingress(
 	 * This line need to be "ostd.drop = true;"
 	 */
 	action drop() {
-		ostd.drop = false;
+		ostd.drop = true;
 	}
 	
 	action set_port_and_src_mac( PortId_t port,

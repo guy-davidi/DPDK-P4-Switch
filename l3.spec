@@ -64,11 +64,12 @@ action NoAction args none {
 
 action send args instanceof send_arg_t {
 	mov m.psa_ingress_output_metadata_egress_port t.port
+	mov m.psa_ingress_output_metadata_drop 0
 	return
 }
 
 action drop_1 args none {
-	mov m.psa_ingress_output_metadata_drop 0
+	mov m.psa_ingress_output_metadata_drop 1
 	return
 }
 
