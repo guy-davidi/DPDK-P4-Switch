@@ -1,4 +1,6 @@
 
+🔭 This project enable to configure ⚡DPDK pipeline⚡ by .p4 program!
+
 # In order to install P4 compiller - p4c_install.sh ⚡
 ```
 chmod 755 ./scripts/p4cinstall.sh
