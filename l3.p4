@@ -7,7 +7,7 @@ const bit<16> ETHERTYPE_IPV4 = 0x0800;
 /* Define all the headers the program will recognize
  * The actual sets of headers processed by each gress can differ
  */
-/* Standard ethernet header */
+
 header ethernet_h {
 	bit<48>   dst_addr;
 	bit<48>   src_addr;
@@ -43,8 +43,6 @@ struct my_ingress_headers_t {
 }
 
 struct my_ingress_metadata_t {
-	//bit<32> port_in;
-	//bit<32> port_out;
 }
 
 struct empty_metadata_t {
@@ -93,8 +91,9 @@ control ingress(
 	inout psa_ingress_output_metadata_t ostd
 )
 {
-	/* If got match -> egress to port 1 else drop 
-	 *
+	/*
+	 * If got match -> egress
+	 * to port 1 else drop
 	 */
 	action send(PortId_t port, ClassOfService_t class) {
 		ostd.egress_port = (PortId_t) port;
@@ -103,7 +102,8 @@ control ingress(
 	}
 
 	/* This is workaround due to probably p4c-dpdk bug.
-	 * Details can be see here: https://github.com/p4lang/p4c/issues/3861
+	 * Details can be see here:
+	 * https://github.com/p4lang/p4c/issues/3861
 	 * This line need to be "ostd.drop = true;"
 	 */
 	action drop() {
