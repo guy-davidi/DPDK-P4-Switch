@@ -79,6 +79,4 @@ Tables:
                 Action NoAction (packets): 0
                 Action send (packets): 700
                 Action drop_1 (packets): 1084290024
-
-
 ```
