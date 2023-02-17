@@ -130,7 +130,10 @@ control ingress(
 		size = IPV4_HOST_SIZE;
 	}
 
-
+	/*
+	 * https://p4.org/p4-spec/docs/PSA.html#sec-registers
+	 * registers, counter
+	 */
 	apply {
 				ipv4_host.apply();
 	}
