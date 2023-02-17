@@ -62,21 +62,20 @@ Table ipv4_host currently has 2 entries.
 
 # Showing the stats of the pipeline - output ⚡
 ```
-pipeline> pipeline PIPELINE0 stats
 Input ports:
-        Port 0: packets 1084289984 bytes 65057399040 empty 1986758197
-        Port 1: packets 700 bytes 42000 empty 3071047502
+        Port 0: packets 877005976 bytes 52620358560 empty 14523130228
+        Port 1: packets 625173214 bytes 37510392840 empty 14774963007
 
 Output ports:
         Port 0: packets 0 bytes 0 clone 0 clonerr 0
-        Port 1: packets 0 bytes 0 clone 0 clonerr 0
-        DROP: packets 1084290705 bytes 28191558330 clone 0 clonerr 0
+        Port 1: packets 48986172 bytes 2939170320 clone 0 clonerr 0
+        DROP: packets 1453193035 bytes 66846879610 clone 0 clonerr 0
 
 Tables:
         Table ipv4_host:
-                Hit (packets): 700
-                Miss (packets): 1084290024
-                Action NoAction (packets): 0
-                Action send (packets): 700
-                Action drop_1 (packets): 1084290024
+                Hit (packets): 48986184
+                Miss (packets): 1453193035
+                Action NoAction (packets): 1453193035
+                Action send (packets): 48986184
+                Action drop_1 (packets): 0
 ```
