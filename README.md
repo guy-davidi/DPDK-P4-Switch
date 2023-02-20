@@ -1,7 +1,7 @@
 
 ## This project enable to configure DPDK pipelin by .p4 program
 
-## In order to install P4 compiller - p4c_install.sh
+## Install P4 compiller - p4c_install.sh
 ```
 chmod 755 ./scripts/p4cinstall.sh
 ./scripts/p4c_install.sh
