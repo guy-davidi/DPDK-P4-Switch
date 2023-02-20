@@ -1,5 +1,6 @@
 
-## This project enable to configure DPDK pipelin by .p4 program
+## About
+This project enable to configure DPDK pipelin by .p4 program
 
 ## Install P4 compiller - p4c_install.sh
 ```
@@ -13,7 +14,7 @@ chmod 755 ./scripts/dpdk_install.sh
 ./scripts/dpdk_install.sh
 ```
 
-## build DPDK's Pipeline APP
+## Build DPDK's Pipeline APP
 ```cd /home/user/dpdk/examples/pipeline
 mkdir build
 make
