@@ -10,7 +10,7 @@ l3.spec: l3.p4
 .PHONY : run
 run: 
 	cd  ~/projects/p4_project
-	sudo ./dpdk-pipeline -c 0x3 -- -s l3.cli
+	sudo ./pipelineD -c 0x3 -- -s l3.cli
 
 .PHONY : test
 test: 

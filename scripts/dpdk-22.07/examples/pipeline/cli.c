@@ -2594,7 +2594,7 @@ cmd_pipeline_stats(char **tokens,
 		out += strlen(out);
 	}
 
-	snprintf(out, out_size, "\nTables:\n");
+	snprintf(out, out_size, "\nDavidi's-Tables:\n");
 	out_size -= strlen(out);
 	out += strlen(out);
 
