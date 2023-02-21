@@ -2608,6 +2608,9 @@ cmd_pipeline_stats(char **tokens,
 		};
 		uint32_t j;
 
+		if (stats.n_pkts_hit % 1000 == 0)
+			printf("Hit is mod by 1000!\n");
+
 		status = rte_swx_ctl_table_info_get(p->p, i, &table_info);
 		if (status) {
 			snprintf(out, out_size, "Table info get error.");
