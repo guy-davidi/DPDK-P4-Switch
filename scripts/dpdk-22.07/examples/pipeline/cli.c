@@ -2517,10 +2517,17 @@ cmd_pipeline_stats(char **tokens,
 	size_t out_size,
 	void *obj)
 {
+	static int stats_caller_counter = 0;
 	struct rte_swx_ctl_pipeline_info info;
 	struct pipeline *p;
 	uint32_t i;
 	int status;
+
+	snprintf(out, out_size, "Davidi's: status counter: %d\n",
+			 stats_caller_counter);
+	out_size -= strlen(out);
+	out += strlen(out);
+	stats_caller_counter++;
 
 	if (n_tokens != 3) {
 		snprintf(out, out_size, MSG_ARG_MISMATCH, tokens[0]);
@@ -2607,9 +2614,6 @@ cmd_pipeline_stats(char **tokens,
 			.n_pkts_action = n_pkts_action,
 		};
 		uint32_t j;
-
-		if (stats.n_pkts_hit % 1000 == 0)
-			printf("Hit is mod by 1000!\n");
 
 		status = rte_swx_ctl_table_info_get(p->p, i, &table_info);
 		if (status) {
@@ -3561,7 +3565,7 @@ cli_script_process(const char *file_name,
 		if (fgets(msg_in, msg_in_len_max + 1, f) == NULL)
 			break;
 
-		printf("%s", msg_in);
+		printf("Davidi's CLI: %s", msg_in);
 		msg_out[0] = 0;
 
 		cli_process(msg_in,
@@ -3572,7 +3576,10 @@ cli_script_process(const char *file_name,
 		if (strlen(msg_out))
 			printf("%s", msg_out);
 	}
-
+	/* Clear mbuf payload */
+	/* memset(rte_pktmbuf_mtod(ut_params->ibuf, uint8_t *), 0,
+	 *     rte_pktmbuf_tailroom(ut_params->ibuf));
+	*/
 	/* Close file */
 	fclose(f);
 	free(msg_out);
