@@ -1,4 +1,5 @@
 
+
 struct ethernet_h {
 	bit<48> dst_addr
 	bit<48> src_addr
@@ -57,8 +58,12 @@ struct my_ingress_metadata_t {
 	bit<8> psa_ingress_output_metadata_class_of_service
 	bit<8> psa_ingress_output_metadata_drop
 	bit<32> psa_ingress_output_metadata_egress_port
+	bit<8> Ingress_tmp
+	bit<8> Ingress_tmp_1
 }
 metadata instanceof my_ingress_metadata_t
+
+regarray reg_counter_0 size 0x5 initval 0
 
 action NoAction args none {
 	return
@@ -68,6 +73,11 @@ action send args instanceof send_arg_t {
 	mov m.psa_ingress_output_metadata_egress_port t.port
 	mov m.psa_ingress_output_metadata_drop 0
 	mov m.psa_ingress_output_metadata_class_of_service t.class
+	regrd m.Ingress_tmp_1 reg_counter_0 0x0
+	regrd m.Ingress_tmp reg_counter_0 0x0
+	mov m.Ingress_tmp_1 m.Ingress_tmp
+	add m.Ingress_tmp_1 t.class
+	regwr reg_counter_0 0x0 m.Ingress_tmp_1
 	return
 }
 

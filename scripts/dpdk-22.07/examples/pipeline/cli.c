@@ -2517,12 +2517,13 @@ cmd_pipeline_stats(char **tokens,
 	size_t out_size,
 	void *obj)
 {
-	static int stats_caller_counter = 0;
+	static int stats_caller_counter = 0, sum_qos = 0;
 	struct rte_swx_ctl_pipeline_info info;
 	struct pipeline *p;
 	uint32_t i;
 	int status;
 
+	/* Print */
 	snprintf(out, out_size, "Davidi's: status counter: %d\n",
 			 stats_caller_counter);
 	out_size -= strlen(out);

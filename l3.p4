@@ -84,6 +84,11 @@ parser Ingress_Parser(
 
 }
 
+action update_pkt_count (inout bit<8> counter, in ClassOfService_t class )
+{	
+	counter = counter + (bit<8>)class;
+}
+
 control ingress(
 	inout my_ingress_headers_t hdr,
 	inout my_ingress_metadata_t meta,
@@ -91,21 +96,24 @@ control ingress(
 	inout psa_ingress_output_metadata_t ostd
 )
 {
+	Register<bit<8>, bit<8>>(5) reg_counter;
+
 	/*
 	 * If got match -> egress
 	 * to port 1 else drop
 	 */
 	action send(PortId_t port, ClassOfService_t class) {
+		bit<8> tmp;
+
 		ostd.egress_port = (PortId_t) port;
 		ostd.drop = false;
 		ostd.class_of_service = (ClassOfService_t) class;
+		
+		tmp = reg_counter.read(0);
+		update_pkt_count(tmp, ostd.class_of_service);
+		reg_counter.write(0, tmp);
 	}
 
-	/* This is workaround due to probably p4c-dpdk bug.
-	 * Details can be see here:
-	 * https://github.com/p4lang/p4c/issues/3861
-	 * This line need to be "ostd.drop = true;"
-	 */
 	action drop() {
 		ostd.drop = true;
 	}
@@ -130,10 +138,6 @@ control ingress(
 		size = IPV4_HOST_SIZE;
 	}
 
-	/*
-	 * https://p4.org/p4-spec/docs/PSA.html#sec-registers
-	 * registers, counter
-	 */
 	apply {
 				ipv4_host.apply();
 	}
