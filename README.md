@@ -3,7 +3,7 @@
 This project enable to configure DPDK pipelin by .p4 program
 
 
-![image](https://user-images.githubusercontent.com/64970907/220255310-92fcb729-934d-4b4f-94c8-18c9f3401a16.png)
+![image](https://user-images.githubusercontent.com/64970907/221396669-4d7f854c-4533-4791-84a0-ec4136f71cea.png)
 
 ## Install P4 compiller - p4c_install.sh
 ```
