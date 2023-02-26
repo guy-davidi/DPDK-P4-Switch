@@ -85,3 +85,48 @@ Tables:
                 Action drop_1 (packets): 0
 ```
 
+## Read QoS from DPDK-App CLI
+```
+pipeline PIPELINE0 regrd reg_counter_0 0
+```
+we can see that the QoS sum:
+```
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x25
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xb5
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xc4
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xea
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x17
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x4a
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xfe
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x3a
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x3
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x7d
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x3
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x0
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x8d
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xe9
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x14
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x28
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x11
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0xdc
+pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
+0x9c
+```
