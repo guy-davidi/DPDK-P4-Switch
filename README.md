@@ -67,27 +67,27 @@ Table ipv4_host currently has 2 entries.
 ## Cli commands explanations
 These commands appear to be configuring a DPDK pipeline application to process network packets. Here's a brief summary of what each command does:
 
-mempool MEMPOOL0 buffer 2304 pool 32K cache 256 cpu 0: Creates a memory pool named MEMPOOL0 with a buffer size of 2304 bytes, a total pool size of 32K, and a cache size of 256. The cpu 0 option specifies that the memory pool should be allocated on the local CPU core.
+- mempool MEMPOOL0 buffer 2304 pool 32K cache 256 cpu 0: Creates a memory pool named MEMPOOL0 with a buffer size of 2304 bytes, a total pool size of 32K, and a cache size of 256. The cpu 0 option specifies that the memory pool should be allocated on the local CPU core.
 
-link LINK0 dev 0000:01:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on and link LINK1 dev 0000:05:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on: Configures two network interfaces named LINK0 and LINK1 with device identifiers 0000:01:00.0 and 0000:05:00.0, respectively. Each interface is configured with one receive queue (rxq 1) with a depth of 128, and one transmit queue (txq 1) with a depth of 512. The interfaces are also set to operate in promiscuous mode (promiscuous on). Finally, the MEMPOOL0 memory pool is specified as the source of buffers for the interfaces.
+- link LINK0 dev 0000:01:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on and link LINK1 dev 0000:05:00.0 rxq 1 128 MEMPOOL0 txq 1 512 promiscuous on: Configures two network interfaces named LINK0 and LINK1 with device identifiers 0000:01:00.0 and 0000:05:00.0, respectively. Each interface is configured with one receive queue (rxq 1) with a depth of 128, and one transmit queue (txq 1) with a depth of 512. The interfaces are also set to operate in promiscuous mode (promiscuous on). Finally, the MEMPOOL0 memory pool is specified as the source of buffers for the interfaces.
 
-pipeline PIPELINE0 create 0: Creates a new pipeline instance named PIPELINE0 with 0 cores.
+- pipeline PIPELINE0 create 0: Creates a new pipeline instance named PIPELINE0 with 0 cores.
 
-pipeline PIPELINE0 port in 0 link LINK0 rxq 0 bsz 32 and pipeline PIPELINE0 port in 1 link LINK1 rxq 0 bsz 32: Configures two input ports on the pipeline, one for each network interface (LINK0 and LINK1). The receive queues (rxq) are specified as 0, indicating that the pipeline will use the default receive queue for each interface. The buffer size (bsz) is set to 32, indicating the maximum size of a packet buffer.
+- pipeline PIPELINE0 port in 0 link LINK0 rxq 0 bsz 32 and pipeline PIPELINE0 port in 1 link LINK1 rxq 0 bsz 32: Configures two input ports on the pipeline, one for each network interface (LINK0 and LINK1). The receive queues (rxq) are specified as 0, indicating that the pipeline will use the default receive queue for each interface. The buffer size (bsz) is set to 32, indicating the maximum size of a packet buffer.
 
-pipeline PIPELINE0 port out 0 link LINK0 txq 0 bsz 32 and pipeline PIPELINE0 port out 1 link LINK1 txq 0 bsz 32: Configures two output ports on the pipeline, one for each network interface (LINK0 and LINK1). The transmit queues (txq) are specified as 0, indicating that the pipeline will use the default transmit queue for each interface. The buffer size (bsz) is set to 32, indicating the maximum size of a packet buffer.
+- pipeline PIPELINE0 port out 0 link LINK0 txq 0 bsz 32 and pipeline PIPELINE0 port out 1 link LINK1 txq 0 bsz 32: Configures two output ports on the pipeline, one for each network interface (LINK0 and LINK1). The transmit queues (txq) are specified as 0, indicating that the pipeline will use the default transmit queue for each interface. The buffer size (bsz) is set to 32, indicating the maximum size of a packet buffer.
 
-pipeline PIPELINE0 build ./l3.spec: Builds the pipeline using the pipeline specification file l3.spec.
+- pipeline PIPELINE0 build ./l3.spec: Builds the pipeline using the pipeline specification file l3.spec.
 
-thread 1 pipeline PIPELINE0 enable: Enables the pipeline on core 1.
+- thread 1 pipeline PIPELINE0 enable: Enables the pipeline on core 1.
 
-pipeline PIPELINE0 stats: Displays statistics for the pipeline.
+- pipeline PIPELINE0 stats: Displays statistics for the pipeline.
 
-pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt: Adds an IP address to MAC address mapping table to the pipeline.
+- pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt: Adds an IP address to MAC address mapping table to the pipeline.
 
-pipeline PIPELINE0 commit: Commits the changes to the pipeline.
+- pipeline PIPELINE0 commit: Commits the changes to the pipeline.
 
-pipeline PIPELINE0 table ipv4_host show: Displays the contents of the IP address to MAC address mapping table.
+- pipeline PIPELINE0 table ipv4_host show: Displays the contents of the IP address to MAC address mapping table.
 ## Showing the stats of the pipeline - output
 ```
 Input ports:
