@@ -89,11 +89,11 @@ These commands appear to be configuring a DPDK pipeline application to process n
 
 - pipeline PIPELINE0 table ipv4_host show: Displays the contents of the IP address to MAC address mapping table.
 
-Note that In DPDK, a queue is a data structure that holds packets for processing. Each queue has a finite capacity, which determines how many packets it can hold at any given time. There are several types of queues in DPDK, such as the receive queue (RX queue) and transmit queue (TX queue), which are used to receive and send packets, respectively.
+Note that In DPDK, A mempool is a pre-allocated block of memory that is used to store packet buffers. It is like a big pool of memory that contains many individual buffer units. Each buffer unit can be used to store one packet at a time. When a packet arrives, it is stored in an available buffer from the mempool.
 
-A mempool (short for memory pool) is a pre-allocated block of memory that is used to store packet buffers. When a packet arrives on a network interface, a buffer from the mempool is assigned to the packet, and the packet is stored in that buffer. Similarly, when a packet is sent out on a network interface, the buffer used to store the packet is returned to the mempool for reuse.
+A queue is a data structure that holds references to the buffers that store packets. A queue is like a line of people waiting for something. Each person in the line corresponds to a packet waiting to be processed. The queue holds references to the buffers (memory locations) where the packets are stored. When it is time to process a packet, the queue retrieves the buffer from the mempool and gives it to the processing function.
 
-So while a queue is used to hold packets, a mempool is used to hold the buffers that packets are stored in. The queue provides a means of ordering packets for processing, while the mempool provides a pool of buffers for storing packets. In other words, queues and mempools work together to manage the movement of packets through the system.
+So, the mempool provides the buffer memory for packets, while the queue manages the order in which packets are processed by holding references to the buffer memory. Both mempool and queue are important components of DPDK, but they serve different purposes.
 
 ## Showing the stats of the pipeline - output
 ```
