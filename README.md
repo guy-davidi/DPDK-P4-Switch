@@ -88,6 +88,13 @@ These commands appear to be configuring a DPDK pipeline application to process n
 - pipeline PIPELINE0 commit: Commits the changes to the pipeline.
 
 - pipeline PIPELINE0 table ipv4_host show: Displays the contents of the IP address to MAC address mapping table.
+
+Note that In DPDK, a queue is a data structure that holds packets for processing. Each queue has a finite capacity, which determines how many packets it can hold at any given time. There are several types of queues in DPDK, such as the receive queue (RX queue) and transmit queue (TX queue), which are used to receive and send packets, respectively.
+
+A mempool (short for memory pool) is a pre-allocated block of memory that is used to store packet buffers. When a packet arrives on a network interface, a buffer from the mempool is assigned to the packet, and the packet is stored in that buffer. Similarly, when a packet is sent out on a network interface, the buffer used to store the packet is returned to the mempool for reuse.
+
+So while a queue is used to hold packets, a mempool is used to hold the buffers that packets are stored in. The queue provides a means of ordering packets for processing, while the mempool provides a pool of buffers for storing packets. In other words, queues and mempools work together to manage the movement of packets through the system.
+
 ## Showing the stats of the pipeline - output
 ```
 Input ports:
