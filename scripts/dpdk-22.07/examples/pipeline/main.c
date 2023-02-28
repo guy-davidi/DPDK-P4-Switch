@@ -133,6 +133,7 @@ parse_args(int argc, char **argv)
 int
 main(int argc, char **argv)
 {
+	volatile int guyandamit = 17;
 	struct conn *conn;
 	struct obj *obj;
 	int status;
@@ -173,7 +174,7 @@ main(int argc, char **argv)
 		cli_script_process(app.script_name,
 			app.conn.msg_in_len_max,
 			app.conn.msg_out_len_max,
-			obj);
+			obj, guyandamit);
 
 	/* Connectivity */
 	app.conn.msg_handle_arg = obj;

@@ -8,12 +8,13 @@
 #include <stddef.h>
 
 void
-cli_process(char *in, char *out, size_t out_size, void *arg);
+cli_process(char *in, char *out, size_t out_size, void *arg, int guyandamit);
 
 int
 cli_script_process(const char *file_name,
 	size_t msg_in_len_max,
 	size_t msg_out_len_max,
-	void *arg);
+	void *arg,
+	int guyandamit);
 
 #endif

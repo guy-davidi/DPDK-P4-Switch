@@ -2024,7 +2024,7 @@ cmd_pipeline_regrd(char **tokens,
 	uint32_t n_tokens,
 	char *out,
 	size_t out_size,
-	void *obj)
+	void *obj, int guyandamit)
 {
 	struct pipeline *p;
 	const char *name;
@@ -2515,7 +2515,8 @@ cmd_pipeline_stats(char **tokens,
 	uint32_t n_tokens,
 	char *out,
 	size_t out_size,
-	void *obj)
+	void *obj,
+	int guyandamit)
 {
 	static int stats_caller_counter = 0, sum_qos = 0;
 	struct rte_swx_ctl_pipeline_info info;
@@ -2524,8 +2525,8 @@ cmd_pipeline_stats(char **tokens,
 	int status;
 
 	/* Print */
-	snprintf(out, out_size, "Davidi's: status counter: %d\n",
-			 stats_caller_counter);
+	snprintf(out, out_size, "Davidi's: status counter: %d and newstatus is %d\n",
+			 stats_caller_counter, guyandamit);
 	out_size -= strlen(out);
 	out += strlen(out);
 	stats_caller_counter++;
@@ -3259,7 +3260,7 @@ cmd_help(char **tokens,
 }
 
 void
-cli_process(char *in, char *out, size_t out_size, void *obj)
+cli_process(char *in, char *out, size_t out_size, void *obj, int guyandamit)
 {
 	char *tokens[CMD_MAX_TOKENS];
 	uint32_t n_tokens = RTE_DIM(tokens);
@@ -3440,7 +3441,7 @@ cli_process(char *in, char *out, size_t out_size, void *obj)
 
 		if ((n_tokens >= 3) &&
 			(strcmp(tokens[2], "regrd") == 0)) {
-			cmd_pipeline_regrd(tokens, n_tokens, out, out_size, obj);
+			cmd_pipeline_regrd(tokens, n_tokens, out, out_size, obj, guyandamit);
 			return;
 		}
 
@@ -3490,7 +3491,7 @@ cli_process(char *in, char *out, size_t out_size, void *obj)
 		if ((n_tokens >= 3) &&
 			(strcmp(tokens[2], "stats") == 0)) {
 			cmd_pipeline_stats(tokens, n_tokens, out, out_size,
-				obj);
+				obj, guyandamit);
 			return;
 		}
 
@@ -3532,7 +3533,7 @@ int
 cli_script_process(const char *file_name,
 	size_t msg_in_len_max,
 	size_t msg_out_len_max,
-	void *obj)
+	void *obj, int guyandamit)
 {
 	char *msg_in = NULL, *msg_out = NULL;
 	FILE *f = NULL;
@@ -3572,7 +3573,7 @@ cli_script_process(const char *file_name,
 		cli_process(msg_in,
 			msg_out,
 			msg_out_len_max,
-			obj);
+			obj, guyandamit);
 
 		if (strlen(msg_out))
 			printf("%s", msg_out);

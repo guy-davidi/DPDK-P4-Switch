@@ -39,6 +39,8 @@
 #define PIPELINE_INSTR_QUANTA                              1000
 #endif
 
+FILE *log_file;
+
 /**
  * Control thread: data plane thread context
  */
@@ -394,8 +396,15 @@ thread_msg_recv(struct rte_ring *msgq_req)
 {
 	struct thread_msg_req *req;
 
+	log_file = fopen("my_log_file.txt", "a");
+	if(!log_file)
+		log_file = fopen("my_log_file.txt", "w+");
+	
 	int status = rte_ring_sc_dequeue(msgq_req, (void **) &req);
 
+	if (!status)
+		fprintf(log_file, "rte_ring_sc_dequeue with status %d\n", status);
+	fclose(log_file);
 	if (status != 0)
 		return NULL;
 
@@ -407,10 +416,16 @@ thread_msg_send(struct rte_ring *msgq_rsp,
 	struct thread_msg_rsp *rsp)
 {
 	int status;
-
+	log_file = fopen("my_log_file.txt", "a");
+	if(!log_file)
+		log_file = fopen("my_log_file.txt", "w+");
 	do {
 		status = rte_ring_sp_enqueue(msgq_rsp, rsp);
-	} while (status == -ENOBUFS);
+		if (!status)
+			fprintf(log_file, "@rte_ring_sp_enqueue with status %d\n", status);
+		} while (status == -ENOBUFS);
+
+	fclose(log_file);
 }
 
 static struct thread_msg_rsp *
