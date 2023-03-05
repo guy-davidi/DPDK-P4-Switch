@@ -137,8 +137,14 @@ main(int argc, char **argv)
 	struct conn *conn;
 	struct obj *obj;
 	int status;
+	uint64_t value = 0, last_value = 0;
+	struct pipeline *p;
+	FILE *davidis_logs;
 
+	/* open log file */
+	davidis_logs = fopen("out.txt", "w+");
 	/* Parse application arguments */
+
 	status = parse_args(argc, argv);
 	if (status < 0)
 		return status;
@@ -185,13 +191,19 @@ main(int argc, char **argv)
 		return status;
 	};
 
+	p = pipeline_find(obj, "PIPELINE0");
+
 	/* Dispatch loop */
 	for ( ; ; ) {
 		conn_poll_for_conn(conn);
 
 		conn_poll_for_msg(conn);
+		status = rte_swx_ctl_pipeline_regarray_read(p->p, "reg_counter_0", 0, &value);
+		fprintf(davidis_logs, "Davidi's QoS reg: 0x%" PRIx64 "\n", value);
+		last_value = value;
 	}
 
+	fclose(davidis_logs);
 	/* clean up the EAL */
 	rte_eal_cleanup();
 }

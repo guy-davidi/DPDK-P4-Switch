@@ -2061,7 +2061,7 @@ cmd_pipeline_regrd(char **tokens,
 		return;
 	}
 
-	snprintf(out, out_size, "0x%" PRIx64 "\n", value);
+	snprintf(out, out_size, "Davidi's QoS reg: 0x%" PRIx64 "\n", value);
 }
 
 static const char cmd_pipeline_regwr_help[] =

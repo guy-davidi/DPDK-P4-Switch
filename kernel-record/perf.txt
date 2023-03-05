@@ -1,0 +1,252 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 85K of event 'cycles'
+# Event count (approx.): 106913527273
+#
+# Children      Self  CPU
+# ........  ........  ...
+#
+    49.23%    49.23%  000
+            |          
+             --49.05%--0x3000632d0044656e
+                       0x7ffd75db38d6
+                       |          
+                       |--42.65%--accept4
+                       |          |          
+                       |          |--40.54%--entry_SYSCALL_64_after_hwframe
+                       |          |          |          
+                       |          |           --40.26%--do_syscall_64
+                       |          |                     |          
+                       |          |                     |--25.38%--__x64_sys_accept4
+                       |          |                     |          |          
+                       |          |                     |           --25.29%--__sys_accept4
+                       |          |                     |                     |          
+                       |          |                     |                      --24.08%--__sys_accept4_file
+                       |          |                     |                                |          
+                       |          |                     |                                |--10.96%--sock_alloc_file
+                       |          |                     |                                |          |          
+                       |          |                     |                                |           --10.68%--alloc_file_pseudo
+                       |          |                     |                                |                     |          
+                       |          |                     |                                |                     |--5.99%--alloc_file
+                       |          |                     |                                |                     |          |          
+                       |          |                     |                                |                     |           --5.68%--alloc_empty_file
+                       |          |                     |                                |                     |                     |          
+                       |          |                     |                                |                     |                      --5.39%--__alloc_file
+                       |          |                     |                                |                     |                                |          
+                       |          |                     |                                |                     |                                |--3.44%--kmem_cache_alloc
+                       |          |                     |                                |                     |                                |          |          
+                       |          |                     |                                |                     |                                |           --0.86%--__slab_alloc
+                       |          |                     |                                |                     |                                |                     |          
+                       |          |                     |                                |                     |                                |                      --0.84%--___slab_alloc
+                       |          |                     |                                |                     |                                |                                |          
+                       |          |                     |                                |                     |                                |                                 --0.76%--allocate_slab
+                       |          |                     |                                |                     |                                |          
+                       |          |                     |                                |                     |                                 --1.14%--security_file_alloc
+                       |          |                     |                                |                     |          
+                       |          |                     |                                |                     |--3.20%--d_alloc_pseudo
+                       |          |                     |                                |                     |          |          
+                       |          |                     |                                |                     |           --2.97%--__d_alloc
+                       |          |                     |                                |                     |                     |          
+                       |          |                     |                                |                     |                      --2.13%--kmem_cache_alloc
+                       |          |                     |                                |                     |          
+                       |          |                     |                                |                      --0.79%--d_instantiate
+                       |          |                     |                                |          
+                       |          |                     |                                |--8.65%--sock_alloc
+                       |          |                     |                                |          |          
+                       |          |                     |                                |          |--7.63%--new_inode_pseudo
+                       |          |                     |                                |          |          |          
+                       |          |                     |                                |          |           --7.46%--alloc_inode
+                       |          |                     |                                |          |                     |          
+                       |          |                     |                                |          |                     |--6.42%--sock_alloc_inode
+                       |          |                     |                                |          |                     |          |          
+                       |          |                     |                                |          |                     |           --6.13%--kmem_cache_alloc
+                       |          |                     |                                |          |                     |                     |          
+                       |          |                     |                                |          |                     |                     |--3.18%--__slab_alloc
+                       |          |                     |                                |          |                     |                     |          |          
+                       |          |                     |                                |          |                     |                     |           --3.17%--___slab_alloc
+                       |          |                     |                                |          |                     |                     |                     |          
+                       |          |                     |                                |          |                     |                     |                      --3.08%--allocate_slab
+                       |          |                     |                                |          |                     |                     |                                |          
+                       |          |                     |                                |          |                     |                     |                                |--1.69%--alloc_pages
+                       |          |                     |                                |          |                     |                     |                                |          |          
+                       |          |                     |                                |          |                     |                     |                                |           --1.68%--__alloc_pages
+                       |          |                     |                                |          |                     |                     |                                |                     |          
+                       |          |                     |                                |          |                     |                     |                                |                      --1.64%--get_page_from_freelist
+                       |          |                     |                                |          |                     |                     |                                |                                |          
+                       |          |                     |                                |          |                     |                     |                                |                                 --1.44%--clear_page_erms
+                       |          |                     |                                |          |                     |                     |                                |          
+                       |          |                     |                                |          |                     |                     |                                 --0.95%--init_once
+                       |          |                     |                                |          |                     |                     |                                           |          
+                       |          |                     |                                |          |                     |                     |                                            --0.85%--inode_init_once
+                       |          |                     |                                |          |                     |                     |          
+                       |          |                     |                                |          |                     |                      --0.88%--obj_cgroup_charge
+                       |          |                     |                                |          |                     |                                |          
+                       |          |                     |                                |          |                     |                                 --0.56%--obj_cgroup_charge_pages
+                       |          |                     |                                |          |                     |          
+                       |          |                     |                                |          |                      --0.80%--inode_init_always
+                       |          |                     |                                |          |          
+                       |          |                     |                                |           --0.86%--_raw_spin_lock
+                       |          |                     |                                |          
+                       |          |                     |                                |--1.43%--inet_accept
+                       |          |                     |                                |          |          
+                       |          |                     |                                |           --1.27%--inet_csk_accept
+                       |          |                     |                                |          
+                       |          |                     |                                |--1.02%--__get_unused_fd_flags
+                       |          |                     |                                |          |          
+                       |          |                     |                                |           --0.52%--alloc_fd
+                       |          |                     |                                |          
+                       |          |                     |                                 --0.56%--fput
+                       |          |                     |          
+                       |          |                      --14.43%--syscall_exit_to_user_mode
+                       |          |                                |          
+                       |          |                                 --14.29%--exit_to_user_mode_prepare
+                       |          |                                           |          
+                       |          |                                            --13.17%--task_work_run
+                       |          |                                                      |          
+                       |          |                                                       --12.47%--____fput
+                       |          |                                                                 |          
+                       |          |                                                                  --12.15%--__fput
+                       |          |                                                                            |          
+                       |          |                                                                            |--7.65%--dput
+                       |          |                                                                            |          |          
+                       |          |                                                                            |           --6.96%--__dentry_kill
+                       |          |                                                                            |                     |          
+                       |          |                                                                            |                     |--4.76%--dentry_unlink_inode
+                       |          |                                                                            |                     |          |          
+                       |          |                                                                            |                     |           --4.54%--iput
+                       |          |                                                                            |                     |                     |          
+                       |          |                                                                            |                     |                      --3.61%--evict
+                       |          |                                                                            |                     |                                |          
+                       |          |                                                                            |                     |                                 --2.08%--destroy_inode
+                       |          |                                                                            |                     |                                           |          
+                       |          |                                                                            |                     |                                           |--0.99%--__destroy_inode
+                       |          |                                                                            |                     |                                           |          |          
+                       |          |                                                                            |                     |                                           |           --0.76%--__fsnotify_inode_delete
+                       |          |                                                                            |                     |                                           |                     |          
+                       |          |                                                                            |                     |                                           |                      --0.71%--fsnotify_destroy_marks
+                       |          |                                                                            |                     |                                           |                                |          
+                       |          |                                                                            |                     |                                           |                                 --0.56%--fsnotify_grab_connector
+                       |          |                                                                            |                     |                                           |          
+                       |          |                                                                            |                     |                                            --0.90%--call_rcu
+                       |          |                                                                            |                     |          
+                       |          |                                                                            |                      --1.83%--dentry_free
+                       |          |                                                                            |                                |          
+                       |          |                                                                            |                                 --1.76%--kmem_cache_free
+                       |          |                                                                            |                                           |          
+                       |          |                                                                            |                                            --1.24%--memcg_slab_free_hook
+                       |          |                                                                            |          
+                       |          |                                                                            |--1.06%--security_file_free
+                       |          |                                                                            |          |          
+                       |          |                                                                            |           --0.74%--kmem_cache_free
+                       |          |                                                                            |          
+                       |          |                                                                            |--0.82%--call_rcu
+                       |          |                                                                            |          
+                       |          |                                                                             --0.76%--sock_close
+                       |          |          
+                       |           --0.63%--__entry_text_start
+                       |          
+                       |--4.44%--epoll_wait
+                       |          |          
+                       |          |--2.64%--entry_SYSCALL_64_after_hwframe
+                       |          |          |          
+                       |          |           --2.40%--do_syscall_64
+                       |          |                     |          
+                       |          |                      --1.55%--__x64_sys_epoll_wait
+                       |          |                                |          
+                       |          |                                 --1.39%--do_epoll_wait
+                       |          |                                           |          
+                       |          |                                            --0.67%--__fdget
+                       |          |                                                      |          
+                       |          |                                                       --0.60%--__fget_light
+                       |          |          
+                       |           --0.68%--__entry_text_start
+                       |          
+                        --1.07%--0x7f7ff8f00666
+
+    49.21%    49.21%  001
+            |          
+            |--11.10%--0
+            |          |          
+            |           --2.35%--0x100e11640
+            |                     0x100e10340
+            |                     |          
+            |                      --1.76%--ixgbe_recv_scattered_pkts_vec
+            |                                |          
+            |                                 --0.80%--ixgbe_recv_scattered_burst_vec
+            |          
+            |--8.43%--rte_swx_pipeline_run
+            |          
+            |--5.00%--instr_table_exec
+            |          
+            |--3.80%--table_lookup
+            |          
+            |--3.42%--instr_mov_exec
+            |          
+            |--2.43%--0x45000800070003
+            |          0xf00002330003c
+            |          0x10048ec80
+            |          |          
+            |           --2.43%--ixgbe_xmit_pkts_vec
+            |                     |          
+            |                      --2.34%--ixgbe_xmit_fixed_burst_vec
+            |          
+            |--2.32%--instr_regrd_mri_exec
+            |          
+            |--2.03%--instr_mov_i_exec
+            |          
+            |--1.95%--0x558b961d97f0
+            |          0x558b961d96f0
+            |          0x558b961d9590
+            |          0x558b96075800
+            |          0x558b96075340
+            |          0x558b96046640
+            |          0x558b960464b0
+            |          0x558b96045020
+            |          0x558b961d9ac0
+            |          |          
+            |           --1.50%--instr_rx_exec
+            |          
+            |--1.64%--instr_hdr_extract_exec
+            |          
+            |--1.54%--instr_jmp_eq_i_exec
+            |          
+            |--1.22%--instr_alu_add_exec
+            |          
+            |--0.99%--0x558b961daea0
+            |          
+            |--0.81%--instr_regwr_rim_exec
+            |          
+            |--0.81%--instr_jmp_neq_i_exec
+            |          
+             --0.73%--instr_hdr_emit3_tx_exec
+
+     0.33%     0.33%  014
+     0.32%     0.32%  012
+     0.16%     0.16%  002
+     0.13%     0.13%  023
+     0.10%     0.10%  006
+     0.10%     0.10%  008
+     0.09%     0.09%  004
+     0.07%     0.07%  011
+     0.04%     0.04%  017
+     0.03%     0.03%  021
+     0.03%     0.03%  016
+     0.03%     0.03%  005
+     0.03%     0.03%  022
+     0.02%     0.02%  020
+     0.02%     0.02%  010
+     0.02%     0.02%  018
+     0.01%     0.01%  007
+     0.01%     0.01%  019
+     0.01%     0.01%  009
+     0.01%     0.01%  015
+     0.00%     0.00%  003
+     0.00%     0.00%  013
+
+
+#
+# (Cannot load tips.txt file, please install perf!)
+#
