@@ -1,2 +1,2 @@
-match 0x0A000000 action send port 0x1 class 17
-match 0x0B652B58 action send port 0x0 class 11
+match 0x0A000000 action send port 0x1 class 1
+match 0x0B652B58 action send port 0x0 class 1

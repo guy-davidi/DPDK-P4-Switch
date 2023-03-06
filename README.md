@@ -160,4 +160,14 @@ pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
 pipeline> pipeline PIPELINE0 regrd reg_counter_0 0
 0x9c
 ```
+## out.txt
+```
+Davidi's QoS reg: 0x64
+Davidi's QoS reg: 0x65
+Davidi's QoS reg: 0x66
+Davidi's QoS reg: 0x67
+Davidi's QoS reg: 0x68
+
+```
+
 It can be seen that each sample has exact jump of 5 packets with QoS -> "17" that gave in the match action table!

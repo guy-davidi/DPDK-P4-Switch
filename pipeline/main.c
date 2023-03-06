@@ -200,9 +200,9 @@ main(int argc, char **argv)
 		conn_poll_for_msg(conn);
 		status = rte_swx_ctl_pipeline_regarray_read(p->p, "reg_counter_0", 0, &value);
 		
-		if (last_value != value)
-		{
+		if (last_value != value && value != 0) {
 			fprintf(davidis_logs, "Davidi's QoS reg: 0x%" PRIx64 "\n", value);
+			fflush(davidis_logs);
 			last_value = value;
 		}
 	}
