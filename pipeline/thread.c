@@ -423,6 +423,7 @@ thread_msg_send(struct rte_ring *msgq_rsp,
 		status = rte_ring_sp_enqueue(msgq_rsp, rsp);
 		if (!status)
 			fprintf(log_file, "@rte_ring_sp_enqueue with status %d\n", status);
+			fflush(log_file);
 		} while (status == -ENOBUFS);
 
 	fclose(log_file);
@@ -538,8 +539,9 @@ thread_main(void *arg __rte_unused)
 		uint32_t j;
 
 		/* Data Plane */
-		for (j = 0; j < t->n_pipelines; j++)
+		for (j = 0; j < t->n_pipelines; j++) {
 			rte_swx_pipeline_run(t->p[j], PIPELINE_INSTR_QUANTA);
+		}
 
 		/* Control Plane */
 		if ((i & 0xF) == 0) {

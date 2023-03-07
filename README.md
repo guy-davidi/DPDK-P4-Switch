@@ -191,7 +191,6 @@ Davidi's QoS reg: 0x1a
 Davidi's QoS reg: 0x1b
 Davidi's QoS reg: 0x1c
 Davidi's QoS reg: 0x1d
-
 ```
 
 It can be seen that each sample has exact jump of 5 packets with QoS -> "17" that gave in the match action table!

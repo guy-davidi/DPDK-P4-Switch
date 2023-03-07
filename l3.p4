@@ -21,7 +21,7 @@ header vlan_tag_h {
 
 header ipv4_h {
 	bit<8>       version_ihl;
-	bit<8>       diffserv;
+	bit<8>       qos; /* QoS*/
 	bit<16>      total_len;
 	bit<16>      identification;
 	bit<16>      flags_frag_offset;
@@ -102,16 +102,19 @@ control ingress(
 	 * If got match -> egress
 	 * to port 1 else drop
 	 */
-	action send(PortId_t port, ClassOfService_t class) {
+	action send(PortId_t port, bit<32> class) {
 		bit<8> tmp;
 
 		ostd.egress_port = (PortId_t) port;
 		ostd.drop = false;
-		ostd.class_of_service = (ClassOfService_t) class;
+		//ostd.class_of_service = (ClassOfService_t) class;
 		
+		/*
 		tmp = reg_counter.read(0);
 		update_pkt_count(tmp, ostd.class_of_service);
 		reg_counter.write(0, tmp);
+		*/
+		hdr.ipv4.src_addr = class;
 	}
 
 	action drop() {

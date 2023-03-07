@@ -13,7 +13,7 @@ struct vlan_tag_h {
 
 struct ipv4_h {
 	bit<8> version_ihl
-	bit<8> diffserv
+	bit<8> qos
 	bit<16> total_len
 	bit<16> identification
 	bit<16> flags_frag_offset
@@ -46,7 +46,7 @@ struct psa_egress_deparser_input_metadata_t {
 
 struct send_arg_t {
 	bit<32> port
-	bit<8> class
+	bit<32> class
 }
 
 header ethernet instanceof ethernet_h
@@ -55,11 +55,8 @@ header ipv4 instanceof ipv4_h
 
 struct my_ingress_metadata_t {
 	bit<32> psa_ingress_input_metadata_ingress_port
-	bit<8> psa_ingress_output_metadata_class_of_service
 	bit<8> psa_ingress_output_metadata_drop
 	bit<32> psa_ingress_output_metadata_egress_port
-	bit<8> Ingress_tmp
-	bit<8> Ingress_tmp_1
 }
 metadata instanceof my_ingress_metadata_t
 
@@ -72,12 +69,7 @@ action NoAction args none {
 action send args instanceof send_arg_t {
 	mov m.psa_ingress_output_metadata_egress_port t.port
 	mov m.psa_ingress_output_metadata_drop 0
-	mov m.psa_ingress_output_metadata_class_of_service t.class
-	regrd m.Ingress_tmp_1 reg_counter_0 0x0
-	regrd m.Ingress_tmp reg_counter_0 0x0
-	mov m.Ingress_tmp_1 m.Ingress_tmp
-	add m.Ingress_tmp_1 t.class
-	regwr reg_counter_0 0x0 m.Ingress_tmp_1
+	mov h.ipv4.src_addr t.class
 	return
 }
 
