@@ -334,6 +334,7 @@ static inline uint16_t
 _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 		uint16_t nb_pkts, uint8_t *split_packet)
 {
+	int current_QoS = 0;
 	volatile union ixgbe_adv_rx_desc *rxdp;
 	struct ixgbe_rx_entry *sw_ring;
 	uint16_t nb_pkts_recd;
@@ -452,6 +453,12 @@ _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 	for (pos = 0, nb_pkts_recd = 0; pos < nb_pkts;
 			pos += RTE_IXGBE_DESCS_PER_LOOP,
 			rxdp += RTE_IXGBE_DESCS_PER_LOOP) {
+
+		FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
+		fprintf(logfile, "Transmitting Packet in for\n", current_QoS);
+		fflush(logfile);
+		fclose(logfile);
+
 		__m128i descs[RTE_IXGBE_DESCS_PER_LOOP];
 		__m128i pkt_mb1, pkt_mb2, pkt_mb3, pkt_mb4;
 		__m128i zero, staterr, sterr_tmp1, sterr_tmp2;
@@ -460,7 +467,8 @@ _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 #if defined(RTE_ARCH_X86_64)
 		__m128i mbp2;
 #endif
-
+		
+		// fetch packet from ring
 		/* B.1 load 2 (64 bit) or 4 (32 bit) mbuf points */
 		mbp1 = _mm_loadu_si128((__m128i *)&sw_ring[pos]);
 
@@ -468,9 +476,17 @@ _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 		/* A.1 load desc[3] */
 		descs[3] = _mm_loadu_si128((__m128i *)(rxdp + 3));
 		rte_compiler_barrier();
-
+		
+		// copy the contents of mbp1 to rx_pkts ----- insert the packet into rx queue
 		/* B.2 copy 2 64 bit or 4 32 bit mbuf point into rx_pkts */
 		_mm_storeu_si128((__m128i *)&rx_pkts[pos], mbp1);
+		
+		// this code was to view the packets before they pass throught the p4 pipeline
+		// struct rte_mbuf *packet = rx_pkts[pos];
+		// int current_QoS = *((uint8_t *)(packet->buf_iova + packet->data_off) + CoS_OFFSET);
+		// FILE* logfile1 = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
+		// fprintf(logfile1, "Packet in with QoS %02X\n", current_QoS);
+		// fclose(logfile1);
 
 #if defined(RTE_ARCH_X86_64)
 		/* B.1 load 2 64 bit mbuf points */
@@ -529,6 +545,8 @@ _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 		zero = _mm_xor_si128(dd_check, dd_check);
 		staterr = _mm_unpacklo_epi32(sterr_tmp1, sterr_tmp2);
 
+		// insert packet 3 and 4 into the queue
+		
 		/* D.3 copy final 3,4 data to rx_pkts */
 		_mm_storeu_si128((void *)&rx_pkts[pos+3]->rx_descriptor_fields1,
 				pkt_mb4);
@@ -669,10 +687,30 @@ ixgbe_recv_scattered_pkts_vec(void *rx_queue, struct rte_mbuf **rx_pkts,
 						       nb_pkts);
 }
 
+#define CoS_OFFSET 29
+
 static inline void
 vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 		struct rte_mbuf *pkt, uint64_t flags)
 {
+	static int num_packet = 0;
+	static long long sum_QoS = 0;
+	int current_QoS = 0;
+
+	FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
+	current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
+	fprintf(logfile, "Transmitting Packet : %d, The QoS %02X\nContents: ", num_packet, current_QoS);
+
+	for (int i = 0; i < pkt->pkt_len; i++) {
+		fprintf(logfile, "%02X ", *((uint8_t *)(pkt->buf_iova + pkt->data_off) + i));
+	}
+	num_packet++;
+	sum_QoS += current_QoS;
+	fprintf(logfile, "\nTotal QoS Transmitted: %lld", sum_QoS);
+	fprintf(logfile, "\n");
+	fflush(logfile);
+	fclose(logfile);
+
 	__m128i descriptor = _mm_set_epi64x((uint64_t)pkt->pkt_len << 46 |
 			flags | pkt->data_len,
 			pkt->buf_iova + pkt->data_off);
@@ -722,8 +760,10 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 		tx_backlog_entry(txep, tx_pkts, n);
 
-		for (i = 0; i < n - 1; ++i, ++tx_pkts, ++txdp)
+		for (i = 0; i < n - 1; ++i, ++tx_pkts, ++txdp) {
+
 			vtx1(txdp, *tx_pkts, flags);
+		}
 
 		vtx1(txdp, *tx_pkts++, rs);
 

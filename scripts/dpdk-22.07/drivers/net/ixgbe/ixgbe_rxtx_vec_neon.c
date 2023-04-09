@@ -579,6 +579,10 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	uint64_t rs = IXGBE_ADVTXD_DCMD_RS | DCMD_DTYP_FLAGS;
 	int i;
 
+	FILE* logfile = fopen("my_logfile", "w+");
+	fprintf(logfile, "ixgbe_xmit_fixed_burst_vec 1\n");
+	fclose(logfile);
+	NOT COMPILE
 	/* cross rx_thresh boundary is not allowed */
 	nb_pkts = RTE_MIN(nb_pkts, txq->tx_rs_thresh);
 
