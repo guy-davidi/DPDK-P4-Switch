@@ -455,7 +455,7 @@ _recv_raw_pkts_vec(struct ixgbe_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 			rxdp += RTE_IXGBE_DESCS_PER_LOOP) {
 
 		FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
-		fprintf(logfile, "Transmitting Packet in for\n", current_QoS);
+		fprintf(logfile, "Transmitting Packet in for function: _recv_raw_pkts_vec\n", current_QoS);
 		fflush(logfile);
 		fclose(logfile);
 
@@ -742,6 +742,16 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	/* cross rx_thresh boundary is not allowed */
 	nb_pkts = RTE_MIN(nb_pkts, txq->tx_rs_thresh);
 
+	/*
+	 * 1. If txq->nb_tx_free is less than txq->tx_free_thresh, it means
+	 *		the transmit queue is getting full and may run out of space soon.
+	 * 2. This does not necessarily mean there are "over" packets, but
+	 *		rather that the number of free transmit (TX) descriptors is limited 
+	 * 		and the transmit queue may need to be emptied.
+	 * 3. The purpose of calling ixgbe_tx_free_bufs(txq) in this case is
+	 * 		to proactively free up transmit buffers and avoid the transmit
+	 * 		queue becoming full, which can lead to packet drops and reduced performance.
+	 */
 	if (txq->nb_tx_free < txq->tx_free_thresh)
 		ixgbe_tx_free_bufs(txq);
 
