@@ -353,6 +353,8 @@ ixgbe_xmit_pkts_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 		num = (uint16_t)RTE_MIN(nb_pkts, txq->tx_rs_thresh);
 		ret = ixgbe_xmit_fixed_burst_vec(tx_queue, &tx_pkts[nb_tx],
 						 num);
+		
+		
 		nb_tx += ret;
 		nb_pkts -= ret;
 		if (ret < num)

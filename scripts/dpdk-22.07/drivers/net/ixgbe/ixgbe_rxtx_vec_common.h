@@ -135,8 +135,13 @@ tx_backlog_entry(struct ixgbe_tx_entry_v *txep,
 {
 	int i;
 
-	for (i = 0; i < (int)nb_pkts; ++i)
+	for (i = 0; i < (int)nb_pkts; ++i){
+		
 		txep[i].mbuf = tx_pkts[i];
+
+	}
+
+
 }
 
 static inline void
