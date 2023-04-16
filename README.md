@@ -193,8 +193,6 @@ Davidi's QoS reg: 0x1c
 Davidi's QoS reg: 0x1d
 ```
 
-
-
 It can be seen that each sample has exact jump of 5 packets with QoS -> "17" that gave in the match action table!
 
 ## Wrtting QoS to hdr.ipv4.src_addr = class
