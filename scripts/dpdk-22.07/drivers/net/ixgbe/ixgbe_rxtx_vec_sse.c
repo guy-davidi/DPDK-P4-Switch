@@ -18,7 +18,7 @@
 
 #define CoS_OFFSET 29
 
-long long sum_QoS = 0;
+long long int sum_QoS = 0;
 int skipped = 0;
 static inline void
 ixgbe_rxq_rearm(struct ixgbe_rx_queue *rxq)
@@ -830,8 +830,8 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	txdp = &txq->tx_ring[tx_id];
 	txep = &txq->sw_ring_v[tx_id];
 
-	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - nb_pkts); 
-
+	//txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - nb_pkts); 
+	
 	n = (uint16_t)(txq->nb_tx_desc - tx_id);
 
 	if (nb_commit >= n) {
@@ -841,11 +841,12 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 		for (i = 0; i < n - 1; ++i, ++tx_pkts, ++txdp) {
 
 			num_pkt_sent += davidis_vtx1(txdp, *tx_pkts, flags, txq->nb_tx_free - i, logfile);
+
 		}
 
 		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - i, logfile);
 
-		nb_commit = (uint16_t)(nb_commit - n);
+		nb_commit = (uint16_t)(num_pkt_sent - n);
 
 		tx_id = 0;
 		txq->tx_next_rs = (uint16_t)(txq->tx_rs_thresh - 1);
@@ -867,6 +868,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 			txq->tx_rs_thresh);
 	}
 
+	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - num_pkt_sent);
 	txq->tx_tail = tx_id;
 
 	IXGBE_PCI_REG_WC_WRITE(txq->tdt_reg_addr, txq->tx_tail);
