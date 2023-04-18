@@ -776,6 +776,7 @@ vtx(volatile union ixgbe_adv_tx_desc *txdp,
 {
 	/* send packet by packet */
 	uint64_t i, num_pkt_sent = 0;
+	int ret;
 
 	for (i = 0; i < nb_pkts; ++i, ++txdp, ++pkt) {
 		// fprintf(logfile, "Free space in queue: %d\n", nb_tx_free - i);
@@ -783,7 +784,14 @@ vtx(volatile union ixgbe_adv_tx_desc *txdp,
 		//if (txq->nb_tx_free < txq->tx_free_thresh)
 			//ixgbe_tx_free_bufs(txq);
 		// nb_tx_free: number of free space in buffer, i - number of packet that already sent
-		num_pkt_sent += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
+
+		ret += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
+		num_pkt_sent += ret;
+		/*if (!ret)
+		{
+			txdp--;
+		}*/
+		
 	}
 
 	return num_pkt_sent;
@@ -807,8 +815,19 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 	/* cross rx_thresh boundary is not allowed */
 	nb_pkts = RTE_MIN(nb_pkts, txq->tx_rs_thresh);
-
+	
+	
 	/*
+	 * nb_pkts - the number of packets that are being processed by a net work application or a network device driver at a given moment in time
+	 * txq - typically refers to a transmit queue. - a transmit queue is a data structure used by a network driver or application to store packets that need to be transmitted
+	 * in dpdk, descriptors are used to describe packets that are being transmitted or received by the network interface. - stored in "descriptor rings", when transmitting packets, the tx_rs_thresh parameter controls the number of transmit descriptors that are prefetched from the descriptor reing.
+	 * tx_free_thresh - the transmit (TX) descriptor ring free threshold. this parameter controls the number of FREE TX DESCRIPTORS that MUST be available in the TX descriptor ring before the driver initiates  a new packet transmission
+	 * tx_rs_thresh refers to the transmit TX and receivev RX descriptor ring prefetch threshold
+	 * nb_tx_free the number of available transmit (TX) descriptors in a transmit queue.
+	 * tx_tail - the tail pointer of a transmit descriptor ring. the driver uses the tx_tail pointer to track the current position in the descriptor ring. - when transmitting packets the driver MOVES THE TX_TAIL pointer to indicate which descriptors in the ring have been used to transmit packets. if the tx_tail pointer is too far ahead of the available descriptors - the transmit queue is not being fully utilized. if its too close - we are running out of free 
+	 */
+
+	 /*
 	 * 1. If txq->nb_tx_free is less than txq->tx_free_thresh, it means
 	 *		the transmit queue is getting full and may run out of space soon.
 	 * 2. This does not necessarily mean there are "over" packets, but
@@ -818,6 +837,17 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	 * 		to proactively free up transmit buffers and avoid the transmit
 	 * 		queue becoming full, which can lead to packet drops and reduced performance.
 	 */
+
+	 /* 
+	 * tx_ring - transmit(TX) descriptor ring. this data structure is used by the network application to manage the transmission of packets.
+	 * this ring contains a series of descriptors, each descriptor describes the packet that needs to be transmitted.
+	 * a descriptor includes information such as: address of packet buffer in memory, length of packet, and flags that control the transmission of the packet.
+	 * The driver uses the tx_ring to manage the transmission of packets, by moving the tx_tail pointer to indicate which descriptors have been used to transmit packets.
+	 *
+	 * sw_ring a software ring buffer is a data structure used for inter-thread communication and packet processing within DPDK
+	 *
+	 */
+
 	if (txq->nb_tx_free < txq->tx_free_thresh)
 		ixgbe_tx_free_bufs(txq);
 
@@ -830,8 +860,6 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	txdp = &txq->tx_ring[tx_id];
 	txep = &txq->sw_ring_v[tx_id];
 
-	//txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - nb_pkts); 
-	
 	n = (uint16_t)(txq->nb_tx_desc - tx_id);
 
 	if (nb_commit >= n) {
@@ -846,7 +874,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - i, logfile);
 
-		nb_commit = (uint16_t)(num_pkt_sent - n);
+		nb_commit = (uint16_t)(nb_commit - num_pkt_sent);
 
 		tx_id = 0;
 		txq->tx_next_rs = (uint16_t)(txq->tx_rs_thresh - 1);
