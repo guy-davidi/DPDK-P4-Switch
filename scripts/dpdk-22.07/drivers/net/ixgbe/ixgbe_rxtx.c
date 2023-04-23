@@ -98,6 +98,7 @@
  * Check for descriptors with their DD bit set and free mbufs.
  * Return the total number of buffers freed.
  */
+extern long long skipped;
 static __rte_always_inline int
 ixgbe_tx_free_bufs(struct ixgbe_tx_queue *txq)
 {

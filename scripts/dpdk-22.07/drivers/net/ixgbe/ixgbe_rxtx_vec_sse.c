@@ -19,7 +19,7 @@
 #define CoS_OFFSET 29
 
 long long int sum_QoS = 0;
-int skipped = 0;
+long long skipped = 0;
 static inline void
 ixgbe_rxq_rearm(struct ixgbe_rx_queue *rxq)
 {
@@ -748,7 +748,7 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 		// fprintf(logfile, "Free Packet : %d, The QoS %02X\n", num_packet, current_QoS);
 		skipped++;
 		rte_pktmbuf_free(pkt);
-		return 0;
+		return 1;
 	}
 
 	/* ----- */
@@ -906,7 +906,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	fflush(logfile);
 	fclose(logfile);
 
-	return num_pkt_sent;
+	return nb_pkts;
 }
 
 static void __rte_cold
