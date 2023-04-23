@@ -769,11 +769,12 @@ vtx(volatile union ixgbe_adv_tx_desc *txdp,
 {
 	/* send packet by packet */
 	uint64_t i, num_pkt_sent = 0;
+	int ret;
 
 	for (i = 0; i < nb_pkts; ++i, ++txdp, ++pkt) {
 
-
-		num_pkt_sent += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
+		ret += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
+		num_pkt_sent += ret;
 
 		
 	}
@@ -844,6 +845,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	txdp = &txq->tx_ring[tx_id];
 	txep = &txq->sw_ring_v[tx_id];
 
+	
 	n = (uint16_t)(txq->nb_tx_desc - tx_id);
 
 	if (nb_commit >= n) {
@@ -852,13 +854,14 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 		for (i = 0; i < n - 1; ++i, ++tx_pkts, ++txdp) {
 
-			num_pkt_sent += davidis_vtx1(txdp, *tx_pkts, flags, txq->nb_tx_free - num_pkt_sent , logfile);
+			num_pkt_sent += davidis_vtx1(txdp, *tx_pkts, flags, txq->nb_tx_free - i , logfile);
+		
 
 		}
 
-		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - num_pkt_sent, logfile);
+		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - i, logfile);
 
-		nb_commit = (uint16_t)(nb_commit - num_pkt_sent);
+		nb_commit = (uint16_t)(nb_commit - num_pkt_sent); // num_pkt_sent instead of n
 
 		tx_id = 0;
 		txq->tx_next_rs = (uint16_t)(txq->tx_rs_thresh - 1);
@@ -870,9 +873,10 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 	tx_backlog_entry(txep, tx_pkts, nb_commit);
 
-	num_pkt_sent += vtx(txdp, tx_pkts, nb_commit, flags, txq->nb_tx_free - num_pkt_sent, logfile);
+	num_pkt_sent += vtx(txdp, tx_pkts, nb_commit, flags, txq->nb_tx_free, logfile);
 
 	tx_id = (uint16_t)(tx_id + num_pkt_sent);
+
 	if (tx_id > txq->tx_next_rs) {
 		txq->tx_ring[txq->tx_next_rs].read.cmd_type_len |=
 			rte_cpu_to_le_32(IXGBE_ADVTXD_DCMD_RS);
@@ -880,7 +884,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 			txq->tx_rs_thresh);
 	}
 
-	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - num_pkt_sent);
+	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - num_pkt_sent); // switch nbpkts to numpktssent !@!@!@!@
 	txq->tx_tail = tx_id;
 
 	IXGBE_PCI_REG_WC_WRITE(txq->tdt_reg_addr, txq->tx_tail);
