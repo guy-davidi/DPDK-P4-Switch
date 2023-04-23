@@ -691,38 +691,42 @@ ixgbe_recv_scattered_pkts_vec(void *rx_queue, struct rte_mbuf **rx_pkts,
 						       nb_pkts);
 }
 
-static inline void
-vtx1(volatile union ixgbe_adv_tx_desc *txdp,
-		struct rte_mbuf *pkt, uint64_t flags)
-{
-	//static int num_packet = 0;
-	//int current_QoS = 0;
 
-	//FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
-	//current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
-	//fprintf(logfile, "Transmitting Packet : %d, The QoS %02X\nContents: ", num_packet, current_QoS);
 
-	///* Log the packet content */
-	//for (int i = 0; i < pkt->pkt_len; i++) {
-	//	fprintf(logfile, "%02X ", *((uint8_t *)(pkt->buf_iova + pkt->data_off) + i));
-	//}
+void printPacketContent(struct rte_mbuf *pkt, uint16_t nb_tx_free, bool dropped) {
+	
+	FILE* packet_content_logfile = fopen("/home/labuser/projects/p4_project/packet_content_logger.txt", "a");
+	if(dropped) {
+		fprintf(packet_content_logfile, "packet dropped, ");
+		fflush(packet_content_logfile);
+	}
 
-	/* Packet counter in SW */
-	//num_packet++;
+	else {
+		/* Log the packet content */
+		for (int i = 0; i < pkt->pkt_len; i++) {
+			fprintf(packet_content_logfile, "%02X ", *((uint8_t *)(pkt->buf_iova + pkt->data_off) + i));
+			fflush(packet_content_logfile);
+		}
+	}
 
-	/* Sum QoS with the current Packet QoS*/
-	//sum_QoS += current_QoS;
+	fprintf(packet_content_logfile, "nb_tx_free = %u.\n", nb_tx_free);
+	
+	fflush(packet_content_logfile);
+	fclose(packet_content_logfile);
 
-	/* Log prints */
-	//fprintf(logfile, "\nTotal QoS Transmitted: %lld\n", sum_QoS);
-	//fflush(logfile);
-	//fclose(logfile);
+}
 
-	/* TX the packet with the exact physical location */
-	//__m128i descriptor = _mm_set_epi64x((uint64_t)pkt->pkt_len << 46 |
-	//		flags | pkt->data_len,
-	//		pkt->buf_iova + pkt->data_off);
-	//_mm_store_si128((__m128i *)&txdp->read, descriptor);
+
+bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_QoS) {
+	
+	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
+	int packet_QoS = *current_QoS;
+
+	if(packet_QoS > 20)
+		return true;
+	else
+		return false;
+
 }
 
 static inline uint64_t
@@ -730,44 +734,33 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 		struct rte_mbuf *pkt, uint64_t flags, uint16_t nb_tx_free, FILE* logfile)
 {
 	/* This function */
-	static int num_packet = 0;
 	int current_QoS = 0;
-
-	// FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
-	current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
-
-	/* Log the packet content */
-	// for (int i = 0; i < pkt->pkt_len; i++) {
-	// 	fprintf(logfile, "%02X ", *((uint8_t *)(pkt->buf_iova + pkt->data_off) + i));
-	// }
-
-	// // fprintf(logfile, "\nnb_tx_free =%u\n", nb_tx_free);
+	bool send_packet_flag;
 
 	/* Our code */
-	if(current_QoS < 20) {
-		// fprintf(logfile, "Free Packet : %d, The QoS %02X\n", num_packet, current_QoS);
-		skipped++;
+	send_packet_flag = bufferManagement(pkt, nb_tx_free, &current_QoS);
+
+	if(send_packet_flag == false) {
+		printPacketContent(pkt, nb_tx_free, true);
+		skipped++; // remove later
 		rte_pktmbuf_free(pkt);
-		return 1;
+		return 0;
 	}
 
-	/* ----- */
-	// fprintf(logfile, "Transmitting Packet : %d, The QoS %02X\nContents: ", num_packet, current_QoS);
-	// fflush(logfile);
+	else {
+		/* Sum QoS with the current Packet QoS*/
+		sum_QoS += current_QoS;
 
-	/* Sum QoS with the current Packet QoS*/
-	sum_QoS += current_QoS;
+		printPacketContent(pkt, nb_tx_free, false);
 
-	/* Packet counter in SW */
-	num_packet++;
+		/* TX the packet with the exact physical location */
+		__m128i descriptor = _mm_set_epi64x((uint64_t)pkt->pkt_len << 46 |
+				flags | pkt->data_len,
+				pkt->buf_iova + pkt->data_off);
+		_mm_store_si128((__m128i *)&txdp->read, descriptor);
 
-	/* TX the packet with the exact physical location */
-	__m128i descriptor = _mm_set_epi64x((uint64_t)pkt->pkt_len << 46 |
-			flags | pkt->data_len,
-			pkt->buf_iova + pkt->data_off);
-	_mm_store_si128((__m128i *)&txdp->read, descriptor);
-
-	return 1;
+		return 1;
+	}
 }
 
 static inline uint64_t
@@ -776,21 +769,12 @@ vtx(volatile union ixgbe_adv_tx_desc *txdp,
 {
 	/* send packet by packet */
 	uint64_t i, num_pkt_sent = 0;
-	int ret;
 
 	for (i = 0; i < nb_pkts; ++i, ++txdp, ++pkt) {
-		// fprintf(logfile, "Free space in queue: %d\n", nb_tx_free - i);
-		// fflush(logfile);
-		//if (txq->nb_tx_free < txq->tx_free_thresh)
-			//ixgbe_tx_free_bufs(txq);
-		// nb_tx_free: number of free space in buffer, i - number of packet that already sent
 
-		ret += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
-		num_pkt_sent += ret;
-		/*if (!ret)
-		{
-			txdp--;
-		}*/
+
+		num_pkt_sent += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
+
 		
 	}
 
@@ -868,11 +852,11 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 		for (i = 0; i < n - 1; ++i, ++tx_pkts, ++txdp) {
 
-			num_pkt_sent += davidis_vtx1(txdp, *tx_pkts, flags, txq->nb_tx_free - i, logfile);
+			num_pkt_sent += davidis_vtx1(txdp, *tx_pkts, flags, txq->nb_tx_free - num_pkt_sent , logfile);
 
 		}
 
-		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - i, logfile);
+		num_pkt_sent += davidis_vtx1(txdp, *tx_pkts++, rs, txq->nb_tx_free - num_pkt_sent, logfile);
 
 		nb_commit = (uint16_t)(nb_commit - num_pkt_sent);
 
@@ -886,7 +870,7 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 	tx_backlog_entry(txep, tx_pkts, nb_commit);
 
-	num_pkt_sent += vtx(txdp, tx_pkts, nb_commit, flags, txq->nb_tx_free, logfile);
+	num_pkt_sent += vtx(txdp, tx_pkts, nb_commit, flags, txq->nb_tx_free - num_pkt_sent, logfile);
 
 	tx_id = (uint16_t)(tx_id + num_pkt_sent);
 	if (tx_id > txq->tx_next_rs) {
