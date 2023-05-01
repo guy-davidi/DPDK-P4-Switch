@@ -35,7 +35,7 @@ int main() {
         if(FIFO_SIZE > 100)
             printf("Increasing to %d\n", FIFO_SIZE );
 
-        usleep(1);
+        usleep(50);
 
     }
 

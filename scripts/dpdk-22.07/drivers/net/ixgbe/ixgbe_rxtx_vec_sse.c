@@ -739,10 +739,10 @@ bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_Qo
 	flock(BUFFER, LOCK_UN);
 	fclose(BUFFER);
 
-	qos_threshold = 1000 * (1/(abs(FIFO_SIZE-1)));
-	if(qos_threshold > 150) qos_threshold = 150;
+	qos_threshold = 1000 * (1/(abs(FIFO_SIZE-1) + 1));
+	if(qos_threshold > 150) qos_threshold = 120;
 
-	if(packet_QoS > qos_threshold)
+	if(packet_QoS > 0)
 		return true;
 	else
 		return false;
