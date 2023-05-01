@@ -730,6 +730,17 @@ bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_Qo
 
 	fflush(logfile);
 	fclose(logfile);
+	
+	volatile int FIFO_SIZE;
+
+	FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r");
+	flock(BUFFER, LOCK_EX) ; // accuire a lock
+	fscanf(BUFFER, "%d", &FIFO_SIZE);
+	flock(BUFFER, LOCK_UN);
+	fclose(BUFFER);
+
+	qos_threshold = 1000 * (1/(abs(FIFO_SIZE-1)));
+	if(qos_threshold > 150) qos_threshold = 150;
 
 	if(packet_QoS > qos_threshold)
 		return true;

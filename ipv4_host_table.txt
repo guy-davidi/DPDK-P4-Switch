@@ -1,2 +1,6 @@
-match 0x0A000000 action send port 0x1 class 60
-match 0x0B000000 action send port 0x1 class 5
+match 0x0A000000 action send port 0x1 class 5
+match 0x0B000000 action send port 0x1 class 20
+match 0x0C000000 action send port 0x1 class 50
+match 0x0D000000 action send port 0x1 class 80
+match 0x0E000000 action send port 0x1 class 150
+match 0x0F000000 action send port 0x1 class 30

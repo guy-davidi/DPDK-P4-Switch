@@ -1,0 +1,9 @@
+every packet : 
+Total QoS Transmitted: 3636200,total dropped = 262570 total packets_sent = 64406, total packets = 326976
+
+inverse linear:
+Total QoS Transmitted: 3521030,total dropped = 487597 total packets_sent = 62995, total packets = 550592
+
+Total QoS Transmitted: 2892365,total dropped = 395508 total packets_sent = 52812, total packets = 448320
+
+Total QoS Transmitted: 3112965,total dropped = 465962 total packets_sent = 55830, total packets = 521792
