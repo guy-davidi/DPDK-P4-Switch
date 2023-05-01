@@ -2,26 +2,40 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdbool.h>
-
+#include <sys/file.h>
+#include <fcntl.h>
 
 int main() {
-    long long int FIFO_SIZE = 0;
+    volatile int FIFO_SIZE = 0;
     
     while (true) {
         
        
         FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r+");
-        fscanf(BUFFER, "%lld", &FIFO_SIZE);
+        
+        flock(BUFFER, LOCK_EX);
+        fscanf(BUFFER, "%d", &FIFO_SIZE);
+        
         fclose(BUFFER);
         
-        if(FIFO_SIZE < 100)
+        if(FIFO_SIZE < 100) {
             FIFO_SIZE++;
-        
-        BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w+");
-        fprintf(BUFFER, "%lld", FIFO_SIZE);
-        fclose(BUFFER);
+        }
+        else {
+            sleep(0.01);
+            continue;
+        }
 
-        sleep(0.01);
+        BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w+");
+
+        fprintf(BUFFER, "%d", FIFO_SIZE);
+        flock(BUFFER, LOCK_UN);
+
+        fclose(BUFFER);
+        if(FIFO_SIZE > 100)
+            printf("Increasing to %d\n", FIFO_SIZE );
+
+        sleep(0.00001);
 
     }
 

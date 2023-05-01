@@ -12,6 +12,9 @@
 
 #include <tmmintrin.h>
 
+#include <sys/file.h>
+#include <fcntl.h>
+
 #ifndef __INTEL_COMPILER
 #pragma GCC diagnostic ignored "-Wcast-qual"
 #endif
@@ -750,7 +753,6 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 	send_packet_flag = bufferManagement(pkt, nb_tx_free, &current_QoS);
 
 	if(send_packet_flag == false) {
-droppacket:
 		// printPacketContent(pkt, nb_tx_free, true);
 		skipped++; // remove later
 		rte_pktmbuf_free(pkt);
@@ -758,11 +760,13 @@ droppacket:
 	}
 
 	else {		
-		long long int FIFO_SIZE = 0;
-		FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r+");
-		fscanf(BUFFER, "%lld", &FIFO_SIZE);
+		volatile int FIFO_SIZE = 0;
+
+		FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r");
+		flock(BUFFER, LOCK_EX) ; // accuire a lock
+		fscanf(BUFFER, "%d", &FIFO_SIZE);
+		flock(BUFFER, LOCK_UN);
 		fclose(BUFFER);
-		FIFO_SIZE--;
 
 
 		if(FIFO_SIZE <= 0 ) {
@@ -772,13 +776,23 @@ droppacket:
 		}
 		
 		/* Sum QoS with the current Packet QoS*/
+		FIFO_SIZE--;
+		if(FIFO_SIZE > 100)
+			fprintf(logfile, "AMIT FIFO SIZE = %d\n", FIFO_SIZE);
+
 		sum_QoS += current_QoS;
 		packets_sent++;
-
-		BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w+");
-		fprintf(BUFFER, "%lld", FIFO_SIZE);
-		fclose(BUFFER);
+		
+		BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w");
+		flock(BUFFER, LOCK_EX) ; // accuire a lock
+		fprintf(BUFFER, "%d", FIFO_SIZE);
 		fprintf(logfile, "BUFFER space = %d\n", FIFO_SIZE);
+		
+		flock(BUFFER, LOCK_UN);
+		fclose(BUFFER);
+
+
+
 
 
 		// printPacketContent(pkt, nb_tx_free, false);
