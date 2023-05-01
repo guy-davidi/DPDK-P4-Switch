@@ -709,7 +709,6 @@ void printPacketContent(struct rte_mbuf *pkt, uint16_t nb_tx_free, bool dropped)
 		}
 	}
 
-	fprintf(packet_content_logfile, "nb_tx_free = %u.\n", nb_tx_free);
 	
 	fflush(packet_content_logfile);
 	fclose(packet_content_logfile);
@@ -721,13 +720,22 @@ bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_Qo
 	
 	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
 	int packet_QoS = *current_QoS;
+	int qos_threshold = 20;
 
-	if(packet_QoS > 20)
+
+	FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
+
+	fflush(logfile);
+	fclose(logfile);
+
+	if(packet_QoS > qos_threshold)
 		return true;
 	else
 		return false;
 
 }
+
+int packets_sent = 0;
 
 static inline uint64_t
 davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
@@ -736,22 +744,46 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 	/* This function */
 	int current_QoS = 0;
 	bool send_packet_flag;
+	
 
 	/* Our code */
 	send_packet_flag = bufferManagement(pkt, nb_tx_free, &current_QoS);
 
 	if(send_packet_flag == false) {
-		printPacketContent(pkt, nb_tx_free, true);
+droppacket:
+		// printPacketContent(pkt, nb_tx_free, true);
 		skipped++; // remove later
 		rte_pktmbuf_free(pkt);
 		return 0;
 	}
 
-	else {
+	else {		
+		long long int FIFO_SIZE = 0;
+		FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r+");
+		fscanf(BUFFER, "%lld", &FIFO_SIZE);
+		fclose(BUFFER);
+		FIFO_SIZE--;
+
+
+		if(FIFO_SIZE <= 0 ) {
+			skipped++; // remove later
+			rte_pktmbuf_free(pkt);
+			return 0;
+		}
+		
 		/* Sum QoS with the current Packet QoS*/
 		sum_QoS += current_QoS;
+		packets_sent++;
 
-		printPacketContent(pkt, nb_tx_free, false);
+		BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w+");
+		fprintf(BUFFER, "%lld", FIFO_SIZE);
+		fclose(BUFFER);
+		fprintf(logfile, "BUFFER space = %d\n", FIFO_SIZE);
+
+
+		// printPacketContent(pkt, nb_tx_free, false);
+		
+
 
 		/* TX the packet with the exact physical location */
 		__m128i descriptor = _mm_set_epi64x((uint64_t)pkt->pkt_len << 46 |
@@ -775,7 +807,6 @@ vtx(volatile union ixgbe_adv_tx_desc *txdp,
 
 		ret += davidis_vtx1(txdp, *pkt, flags, nb_tx_free - i, logfile);
 		num_pkt_sent += ret;
-
 		
 	}
 
@@ -795,7 +826,6 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 	int i;
 	uint64_t num_pkt_sent = 0;
 
-	skipped = 0;
 	FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
 
 	/* cross rx_thresh boundary is not allowed */
@@ -875,8 +905,9 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 
 	num_pkt_sent += vtx(txdp, tx_pkts, nb_commit, flags, txq->nb_tx_free, logfile);
 
-	tx_id = (uint16_t)(tx_id + num_pkt_sent);
-
+	tx_id = (uint16_t)(tx_id + num_pkt_sent); // our addition
+	// tx_id = (uint16_t)(tx_id + nb_commit); // original
+ 
 	if (tx_id > txq->tx_next_rs) {
 		txq->tx_ring[txq->tx_next_rs].read.cmd_type_len |=
 			rte_cpu_to_le_32(IXGBE_ADVTXD_DCMD_RS);
@@ -884,17 +915,20 @@ ixgbe_xmit_fixed_burst_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 			txq->tx_rs_thresh);
 	}
 
-	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - num_pkt_sent); // switch nbpkts to numpktssent !@!@!@!@
+	txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - num_pkt_sent); // our addition
+	// txq->nb_tx_free = (uint16_t)(txq->nb_tx_free - nb_pkts);  // original
 	txq->tx_tail = tx_id;
 
 	IXGBE_PCI_REG_WC_WRITE(txq->tdt_reg_addr, txq->tx_tail);
 	
 	/* Log prints */
-	fprintf(logfile, "Total QoS Transmitted: %lld\n", sum_QoS);
+	fprintf(logfile, "Total QoS Transmitted: %lld,total dropped = %d total packets_sent = %lld, total packets = %d\n", sum_QoS, skipped ,packets_sent, skipped+packets_sent);
+
 	fflush(logfile);
 	fclose(logfile);
 
-	return nb_pkts;
+	return nb_pkts; // original
+	// return num_pkt_sent;
 }
 
 static void __rte_cold
