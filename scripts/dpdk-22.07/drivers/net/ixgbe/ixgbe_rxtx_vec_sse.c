@@ -11,7 +11,7 @@
 #include "ixgbe_rxtx_vec_common.h"
 
 #include <tmmintrin.h>
-
+#include <time.h>
 #include <sys/file.h>
 #include <fcntl.h>
 
@@ -717,19 +717,12 @@ void printPacketContent(struct rte_mbuf *pkt, uint16_t nb_tx_free, bool dropped)
 	fclose(packet_content_logfile);
 
 }
-
-
-bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_QoS) {
+bool bufferManagementInverseLinear(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_QoS, FILE *logfile) {
 	
 	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
 	int packet_QoS = *current_QoS;
 	int qos_threshold = 20;
 
-
-	FILE* logfile = fopen("/home/labuser/projects/p4_project/my_logfile.txt", "a");
-
-	fflush(logfile);
-	fclose(logfile);
 	
 	volatile int FIFO_SIZE;
 
@@ -749,6 +742,42 @@ bool bufferManagement(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_Qo
 
 }
 
+bool bufferManagementProbability(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_QoS, FILE *logfile) {
+	
+	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
+	int packet_QoS = *current_QoS;
+	
+	double a = 0.05, b = 75, c = 10, drop_probability;
+	double u;
+	//srand(time(NULL));
+
+	volatile int FIFO_SIZE;
+	FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r");
+	flock(BUFFER, LOCK_EX) ; // accuire a lock
+	
+	// upon error, drop the packet
+	if(fscanf(BUFFER, "%d", &FIFO_SIZE) == EOF) {		
+		flock(BUFFER, LOCK_UN);
+		fclose(BUFFER);
+		return false;
+	}
+
+	flock(BUFFER, LOCK_UN);
+	fclose(BUFFER);
+
+	drop_probability = (double)1/ (1+ exp(a * (packet_QoS - b))) * exp(-FIFO_SIZE / c); // sigmoid
+	u = rand() / (RAND_MAX + 1.0); // random number 0 - 1
+
+	// fprintf(logfile, "Drop Probability = %f, FIFO_SIZE = %d, qos = %d rng = %f\n", drop_probability, FIFO_SIZE, packet_QoS, u );
+	
+	
+	if(u  < drop_probability)
+		return false;
+	else
+		return true;
+
+}
+
 int packets_sent = 0;
 
 static inline uint64_t
@@ -761,8 +790,8 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 	
 
 	/* Our code */
-	send_packet_flag = bufferManagement(pkt, nb_tx_free, &current_QoS);
-
+	send_packet_flag = bufferManagementProbability(pkt, nb_tx_free, &current_QoS, logfile);
+	
 	if(send_packet_flag == false) {
 		// printPacketContent(pkt, nb_tx_free, true);
 		skipped++; // remove later
@@ -788,8 +817,6 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 		
 		/* Sum QoS with the current Packet QoS*/
 		FIFO_SIZE--;
-		if(FIFO_SIZE > 100)
-			fprintf(logfile, "AMIT FIFO SIZE = %d\n", FIFO_SIZE);
 
 		sum_QoS += current_QoS;
 		packets_sent++;
@@ -797,14 +824,11 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 		BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w");
 		flock(BUFFER, LOCK_EX) ; // accuire a lock
 		fprintf(BUFFER, "%d", FIFO_SIZE);
-		fprintf(logfile, "BUFFER space = %d\n", FIFO_SIZE);
+
+		// fprintf(logfile, "BUFFER space = %d\n", FIFO_SIZE);
 		
 		flock(BUFFER, LOCK_UN);
 		fclose(BUFFER);
-
-
-
-
 
 		// printPacketContent(pkt, nb_tx_free, false);
 		
