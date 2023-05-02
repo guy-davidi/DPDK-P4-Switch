@@ -747,7 +747,7 @@ bool bufferManagementProbability(struct rte_mbuf *pkt, uint16_t nb_tx_free, int 
 	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
 	int packet_QoS = *current_QoS;
 	
-	double a = 0.05, b = 75, c = 10, drop_probability;
+	double a = 0.05, b = 120, c = 10, drop_probability;
 	double u;
 	//srand(time(NULL));
 
