@@ -111,3 +111,16 @@ Total QoS Transmitted: 3417470,total dropped = 476630 total packets_sent = 32106
 Total QoS Transmitted: 3134945,total dropped = 476193 total packets_sent = 29279, total packets = 505472
 
 double a = 0.05, b = 200, c = 10
+
+inverse 10 minutes:
+===========================
+Total QoS Transmitted: 693575,total dropped = 198239 total packets_sent = 11937, total packets = 210176
+Total QoS Transmitted: 1243890,total dropped = 339456 total packets_sent = 21440, total packets = 360896
+Total QoS Transmitted: 1626490,total dropped = 426321 total packets_sent = 28335, total packets = 454656 
+Total QoS Transmitted: 2298145,total dropped = 617867 total packets_sent = 40117, total packets = 657984
+Total QoS Transmitted: 2677870,total dropped = 745285 total packets_sent = 46011, total packets = 791296
+Total QoS Transmitted: 3179415,total dropped = 881155 total packets_sent = 55101, total packets = 936256
+Total QoS Transmitted: 3581945,total dropped = 981452 total packets_sent = 62004, total packets = 1043456
+Total QoS Transmitted: 4247130,total dropped = 1159057 total packets_sent = 73711, total packets = 1232768
+Total QoS Transmitted: 4783190,total dropped = 1292653 total packets_sent = 82771, total packets = 1375424
+Total QoS Transmitted: 5370575,total dropped = 1458930 total packets_sent = 93134, total packets = 1552064

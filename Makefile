@@ -12,7 +12,9 @@ run:
 	cd  ~/projects/p4_project
 	echo -n > /home/labuser/projects/p4_project/my_logfile.txt
 	echo -n >  /home/labuser/projects/p4_project/packet_content_logger.txt
-	echo "100" > /home/labuser/projects/p4_project/bufferEmulator.txt
+	echo "33" > /home/labuser/projects/p4_project/bufferEmulatorRRLower20.txt
+	echo "33" > /home/labuser/projects/p4_project/bufferEmulatorRange_20_80.txt
+	echo "33" > /home/labuser/projects/p4_project/bufferEmulatorBigger_80.txt
 	sudo ./pipelineD -c 0x3 -- -s l3.cli
 
 .PHONY : test

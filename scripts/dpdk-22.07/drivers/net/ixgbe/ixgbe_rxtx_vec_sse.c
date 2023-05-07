@@ -742,6 +742,7 @@ bool bufferManagementInverseLinear(struct rte_mbuf *pkt, uint16_t nb_tx_free, in
 
 }
 
+
 bool bufferManagementProbability(struct rte_mbuf *pkt, uint16_t nb_tx_free, int *current_QoS, FILE *logfile) {
 	
 	*current_QoS = *((uint8_t *)(pkt->buf_iova + pkt->data_off) + CoS_OFFSET);
@@ -791,7 +792,9 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 
 	/* Our code */
 	send_packet_flag = bufferManagementProbability(pkt, nb_tx_free, &current_QoS, logfile);
-	
+
+	send_packet_flag = true;
+
 	if(send_packet_flag == false) {
 		// printPacketContent(pkt, nb_tx_free, true);
 		skipped++; // remove later
@@ -802,7 +805,19 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 	else {		
 		volatile int FIFO_SIZE = 0;
 
-		FILE *BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "r");
+		FILE *BUFFER;
+
+		if (current_QoS <= 20) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorRRLower20.txt", "r");
+			
+		} else if (current_QoS < 80 && current_QoS > 20 ) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorRange_20_80.txt", "r");
+
+		} else if (current_QoS >= 80) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorBigger_80.txt", "r");
+			
+		}
+		
 		flock(BUFFER, LOCK_EX) ; // accuire a lock
 		fscanf(BUFFER, "%d", &FIFO_SIZE);
 		flock(BUFFER, LOCK_UN);
@@ -820,8 +835,22 @@ davidis_vtx1(volatile union ixgbe_adv_tx_desc *txdp,
 
 		sum_QoS += current_QoS;
 		packets_sent++;
+
 		
-		BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulator.txt", "w");
+		if (current_QoS <= 20) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorRRLower20.txt", "w");
+			
+		} else if (current_QoS < 80 && current_QoS > 20 ) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorRange_20_80.txt", "w");
+
+		} else if (current_QoS >= 80) {
+			BUFFER = fopen("/home/labuser/projects/p4_project/bufferEmulatorBigger_80.txt", "w");
+			
+		}
+		
+		
+		
+		
 		flock(BUFFER, LOCK_EX) ; // accuire a lock
 		fprintf(BUFFER, "%d", FIFO_SIZE);
 
