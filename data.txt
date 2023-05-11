@@ -64,8 +64,6 @@ Total QoS Transmitted: 2424365,total dropped = 752699 total packets_sent = 26693
 Total QoS Transmitted: 2593385,total dropped = 754548 total packets_sent = 28684, total packets = 783232
 
 
-
-
 IXIA 1%
 ~~~~~~~~
 every packet
@@ -91,28 +89,22 @@ Total QoS Transmitted: 2580845,total dropped = 427570 total packets_sent = 28558
 Total QoS Transmitted: 2623435,total dropped = 466857 total packets_sent = 28759, total packets = 495616
 Total QoS Transmitted: 2593985,total dropped = 448671 total packets_sent = 28321, total packets = 476992
 
-
-
-double a = 0.05, b = 100, c = 10, drop_probability;
+double a = 0.05, b = 100, c = 10
 ===========================
 
 Total QoS Transmitted: 3053140,total dropped = 453637 total packets_sent = 29243, total packets = 482880
 Total QoS Transmitted: 3234965,total dropped = 467100 total packets_sent = 31140, total packets = 498240
 Total QoS Transmitted: 3000500,total dropped = 446389 total packets_sent = 28939, total packets = 475328
+Total QoS Transmitted: 3076285,total dropped = 434305 total packets_sent = 29183, total packets = 463488
 
 double a = 0.05, b = 120, c = 10
 ===========================
-
-No 'Regex' devices detected
-===========================
-DONE
 Total QoS Transmitted: 3405015,total dropped = 482789 total packets_sent = 32283, total packets = 515072
 Total QoS Transmitted: 3417470,total dropped = 476630 total packets_sent = 32106, total packets = 508736
 Total QoS Transmitted: 3134945,total dropped = 476193 total packets_sent = 29279, total packets = 505472
 
 double a = 0.05, b = 200, c = 10
-
-inverse 10 minutes:
+inverse 10 
 ===========================
 Total QoS Transmitted: 693575,total dropped = 198239 total packets_sent = 11937, total packets = 210176
 Total QoS Transmitted: 1243890,total dropped = 339456 total packets_sent = 21440, total packets = 360896
@@ -124,3 +116,94 @@ Total QoS Transmitted: 3581945,total dropped = 981452 total packets_sent = 62004
 Total QoS Transmitted: 4247130,total dropped = 1159057 total packets_sent = 73711, total packets = 1232768
 Total QoS Transmitted: 4783190,total dropped = 1292653 total packets_sent = 82771, total packets = 1375424
 Total QoS Transmitted: 5370575,total dropped = 1458930 total packets_sent = 93134, total packets = 1552064
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
