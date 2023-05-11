@@ -287,8 +287,16 @@ Total QoS Transmitted: 4356210,total dropped = 490845 total packets_sent = 31523
 
 
 
+QoS:
+match 0x0A000000 action send port 0x1 class 5
+match 0x0B000000 action send port 0x1 class 20
+match 0x0C000000 action send port 0x1 class 50
+match 0x0D000000 action send port 0x1 class 80
+match 0x0E000000 action send port 0x1 class 90 <- Changed!
+match 0x0F000000 action send port 0x1 class 30
 
-
+a = 0.10, b = 100, c = 100
+Total QoS Transmitted: 2466685,total dropped = 456040 total packets_sent = 32664, total packets = 488704
 
 
 
