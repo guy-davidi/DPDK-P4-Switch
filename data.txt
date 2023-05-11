@@ -118,42 +118,114 @@ Total QoS Transmitted: 4783190,total dropped = 1292653 total packets_sent = 8277
 Total QoS Transmitted: 5370575,total dropped = 1458930 total packets_sent = 93134, total packets = 1552064
 
 
+Add data for Optimization lead algorithem:
+======================================================
+QoS:
+match 0x0A000000 action send port 0x1 class 5
+match 0x0B000000 action send port 0x1 class 20
+match 0x0C000000 action send port 0x1 class 50
+match 0x0D000000 action send port 0x1 class 80
+match 0x0E000000 action send port 0x1 class 150
+match 0x0F000000 action send port 0x1 class 30
+
+A Changes:
+========================
+a = 0.05, b = 120, c = 10
+Total QoS Transmitted: 3076285,total dropped = 434305 total packets_sent = 29183, total packets = 463488
+
+a = 0.01, b = 120, c = 10
+Total QoS Transmitted: 2177050,total dropped = 492402 total packets_sent = 31630, total packets = 524032
+
+a = 0.02, b = 120, c = 10
+Total QoS Transmitted: 2451265,total dropped = 465308 total packets_sent = 29668, total packets = 494976
+
+a = 0.03, b = 120, c = 10
+Total QoS Transmitted: 3057295,total dropped = 486319 total packets_sent = 32785, total packets = 519104
+Total QoS Transmitted: 3057295,total dropped = 486319 total packets_sent = 32785, total packets = 519104
+Total QoS Transmitted: 3057295,total dropped = 486319 total packets_sent = 32785, total packets = 519104
+
+a = 0.04, b = 120, c = 10
+Total QoS Transmitted: 2903320,total dropped = 475160 total packets_sent = 28328, total packets = 503488
+Total QoS Transmitted: 2974200,total dropped = 450053 total packets_sent = 29307, total packets = 479360
+Total QoS Transmitted: 2692690,total dropped = 435951 total packets_sent = 26321, total packets = 462272
+
+a = 0.05, b = 100, c = 10
+Total QoS Transmitted: 3053140,total dropped = 453637 total packets_sent = 29243, total packets = 482880
+Total QoS Transmitted: 3234965,total dropped = 467100 total packets_sent = 31140, total packets = 498240
+Total QoS Transmitted: 3000500,total dropped = 446389 total packets_sent = 28939, total packets = 475328
+Total QoS Transmitted: 3076285,total dropped = 434305 total packets_sent = 29183, total packets = 463488
+
+a = 0.06, b = 100, c = 10
+Total QoS Transmitted: 3131250,total dropped = 436975 total packets_sent = 28497, total packets = 465472
+Total QoS Transmitted: 2860815,total dropped = 421254 total packets_sent = 25914, total packets = 447168
+Total QoS Transmitted: 3557105,total dropped = 484263 total packets_sent = 32345, total packets = 516608
+Total QoS Transmitted: 2850430,total dropped = 431156 total packets_sent = 25676, total packets = 456832
+Total QoS Transmitted: 3139310,total dropped = 449467 total packets_sent = 28421, total packets = 477888
+
+a = 0.07, b = 100, c = 10
+Total QoS Transmitted: 2800950,total dropped = 402937 total packets_sent = 24903, total packets = 427840
+Total QoS Transmitted: 3580015,total dropped = 478454 total packets_sent = 31882, total packets = 510336
+Total QoS Transmitted: 3236900,total dropped = 452479 total packets_sent = 28737, total packets = 481216
+
+a = 0.08, b = 100, c = 10
+Total QoS Transmitted: 3408400,total dropped = 455463 total packets_sent = 30297, total packets = 485760
+Total QoS Transmitted: 3226190,total dropped = 455724 total packets_sent = 28308, total packets = 484032
+Total QoS Transmitted: 3352160,total dropped = 439679 total packets_sent = 29569, total packets = 469248
+Total QoS Transmitted: 3003170,total dropped = 429237 total packets_sent = 26187, total packets = 455424
+
+a = 0.09, b = 100, c = 10
+Total QoS Transmitted: 3350740,total dropped = 448303 total packets_sent = 28945, total packets = 477248
+Total QoS Transmitted: 3227765,total dropped = 436630 total packets_sent = 28074, total packets = 464704
+Total QoS Transmitted: 3344550,total dropped = 459851 total packets_sent = 28853, total packets = 488704
+
+a = 0.10, b = 100, c = 10
+Total QoS Transmitted: 3152425,total dropped = 432262 total packets_sent = 27130, total packets = 459392
+Total QoS Transmitted: 3760450,total dropped = 482156 total packets_sent = 32660, total packets = 514816
+Total QoS Transmitted: 3295540,total dropped = 460703 total packets_sent = 28129, total packets = 488832
+Total QoS Transmitted: 3131810,total dropped = 422713 total packets_sent = 27079, total packets = 449792
+
+a = 0.15, b = 100, c = 10
+Total QoS Transmitted: 3719480,total dropped = 476483 total packets_sent = 31741, total packets = 508224
+Total QoS Transmitted: 3092940,total dropped = 421727 total packets_sent = 26337, total packets = 448064
+Total QoS Transmitted: 3417175,total dropped = 469997 total packets_sent = 29203, total packets = 499200
+
+a = 0.20, b = 100, c = 10
+Total QoS Transmitted: 3560400,total dropped = 492311 total packets_sent = 30057, total packets = 522368
+Total QoS Transmitted: 3357180,total dropped = 457030 total packets_sent = 28282, total packets = 485312
+Total QoS Transmitted: 3454340,total dropped = 459891 total packets_sent = 29325, total packets = 489216
 
 
+B Changes:
+========================
+a = 0.10, b = 10, c = 10
+Total QoS Transmitted: 1913450,total dropped = 476014 total packets_sent = 30866, total packets = 506880
+a = 0.10, b = 50, c = 10
+Total QoS Transmitted: 2071325,total dropped = 432407 total packets_sent = 26025, total packets = 458432
+a = 0.10, b = 70, c = 10
+Total QoS Transmitted: 2838305,total dropped = 466939 total packets_sent = 30277, total packets = 497216
+a = 0.10, b = 90, c = 10
+Total QoS Transmitted: 3308590,total dropped = 488141 total packets_sent = 30067, total packets = 518208
+a = 0.10, b = 100, c = 10
+Total QoS Transmitted: 3152425,total dropped = 432262 total packets_sent = 27130, total packets = 459392
+Total QoS Transmitted: 3760450,total dropped = 482156 total packets_sent = 32660, total packets = 514816
+Total QoS Transmitted: 3295540,total dropped = 460703 total packets_sent = 28129, total packets = 488832
+Total QoS Transmitted: 3131810,total dropped = 422713 total packets_sent = 27079, total packets = 449792
+a = 0.10, b = 110, c = 10
+Total QoS Transmitted: 3230390,total dropped = 423686 total packets_sent = 27770, total packets = 451456
+a = 0.10, b = 120, c = 10
+Total QoS Transmitted: 3247925,total dropped = 426932 total packets_sent = 28044, total packets = 454976
+Total QoS Transmitted: 3475935,total dropped = 450414 total packets_sent = 30034, total packets = 480448
+a = 0.10, b = 140, c = 10
+Total QoS Transmitted: 3404440,total dropped = 475978 total packets_sent = 31606, total packets = 507584
 
+a = 0.10, b = 150, c = 10
+Total QoS Transmitted: 3270150,total dropped = 472131 total packets_sent = 30461, total packets = 502592
 
+a = 0.10, b = 170, c = 10
+Total QoS Transmitted: 1963855,total dropped = 424586 total packets_sent = 28918, total packets = 453504
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+a = 0.10, b = 200, c = 10
+Total QoS Transmitted: 2042155,total dropped = 447278 total packets_sent = 30098, total packets = 477376
 
 
 
