@@ -110,5 +110,79 @@ plt.grid()
 # Show the graph
 plt.show()
 
+# Graph with changing parameters
+A_Values = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.15, 0.20] 
 
+QoS_A_changes = [
+    2177050,
+    2451265,
+    3057295,
+    2903320,
+    2713295,
+    3234965,
+    3131250,
+    3236900,
+    3226190,
+    3350740,
+    3760450,
+    3719480
+]
 
+B_Values = [10 , 50, 70, 90, 100, 110, 120, 140, 150, 170, 200]
+QoS_B_changes = [
+    1913450,
+    2071325,
+    2838305,
+    3308590,
+    3760450,
+    3230390,
+    3247925,
+    3404440,
+    3270150,
+    1963855,
+    2042155
+]
+
+C_Values = [1,3,5,7,9,10,13,15,20,25,30,40,50,60,100]
+QoS_C_changes = [
+    1687640,
+    2616685,
+    2841175,
+    3017890,
+    3549230,
+    3565340,
+    3406540,
+    3728675,
+    3673990,
+    4055630,
+    3571150,
+    3713160,
+    4310530,
+    3941190,
+    4266035
+]
+
+# Plot avg, max, min, vs ro
+plt.plot(A_Values, QoS_A_changes, label='QoS Vs. A')
+plt.xlabel('Parameter Value')
+plt.ylabel('Total QoS transmitted')
+plt.title('Total QoS transmitted vs. Parameter A')
+plt.legend()
+plt.grid()
+plt.show()
+
+plt.plot(B_Values, QoS_B_changes, label='QoS Vs. B')
+plt.xlabel('Parameter Value')
+plt.ylabel('Total QoS transmitted')
+plt.title('Total QoS transmitted vs. Parameter B')
+plt.legend()
+plt.grid()
+plt.show()
+
+plt.plot(C_Values, QoS_C_changes, label='QoS Vs. C')
+plt.xlabel('Parameter Value')
+plt.ylabel('Total QoS transmitted')
+plt.title('Total QoS transmitted vs. Parameter C')
+plt.legend()
+plt.grid()
+plt.show()
