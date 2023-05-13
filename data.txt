@@ -300,6 +300,65 @@ Total QoS Transmitted: 2466685,total dropped = 456040 total packets_sent = 32664
 
 
 
+With Random Packets:
+3 sec Ixaia, 1%
+
+bufferManagementProbability
+a = 0.05, b = 120, c = 10, drop_probability;
+Total QoS Transmitted: 5201769,total dropped = 463278 total packets_sent = 30290, total packets = 493568
+Total QoS Transmitted: 4519805,total dropped = 453114 total packets_sent = 26374, total packets = 479488
+Total QoS Transmitted: 4519805,total dropped = 453114 total packets_sent = 26374, total packets = 479488
+Total QoS Transmitted: 5342010,total dropped = 487621 total packets_sent = 30971, total packets = 518592
+
+all packets pass:
+Total QoS Transmitted: 3168242,total dropped = 453272 total packets_sent = 27560, total packets = 480832
+Total QoS Transmitted: 3109649,total dropped = 467304 total packets_sent = 27160, total packets = 494464
+Total QoS Transmitted: 2934570,total dropped = 435052 total packets_sent = 25492, total packets = 460544
+Total QoS Transmitted: 2934570,total dropped = 435052 total packets_sent = 25492, total packets = 460544
+
+
+bufferManagementInverseLinear
+Total QoS Transmitted: 3480388,total dropped = 469906 total packets_sent = 30318, total packets = 500224
+Total QoS Transmitted: 3061502,total dropped = 426521 total packets_sent = 26663, total packets = 453184
+Total QoS Transmitted: 3153781,total dropped = 422311 total packets_sent = 27609, total packets = 449920
+Total QoS Transmitted: 2986820,total dropped = 423108 total packets_sent = 25980, total packets = 449088
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
