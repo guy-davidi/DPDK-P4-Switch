@@ -324,6 +324,13 @@ Total QoS Transmitted: 3153781,total dropped = 422311 total packets_sent = 27609
 Total QoS Transmitted: 2986820,total dropped = 423108 total packets_sent = 25980, total packets = 449088
 
 
+3 buffers - paper
+Total QoS Transmitted: 1945936,total dropped = 467078 total packets_sent = 26298, total packets = 493376
+Total QoS Transmitted: 1853953,total dropped = 446577 total packets_sent = 25103, total packets = 471680
+Total QoS Transmitted: 2110970,total dropped = 480314 total packets_sent = 28614, total packets = 508928
+Total QoS Transmitted: 2203831,total dropped = 490023 total packets_sent = 29721, total packets = 519744
+Total QoS Transmitted: 2247398,total dropped = 479758 total packets_sent = 30194, total packets = 509952
+
 
 
 
