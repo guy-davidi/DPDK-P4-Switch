@@ -1182,3 +1182,15 @@ rte_ring_sc_dequeue with status 0
 @rte_ring_sp_enqueue with status 0
 rte_ring_sc_dequeue with status 0
 @rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
+rte_ring_sc_dequeue with status 0
+@rte_ring_sp_enqueue with status 0
