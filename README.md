@@ -14,7 +14,13 @@ Default algorithm – Every packet passes.
 Three Buffers Round Robin – The buffer is split into three sub-buffers for handling packets with different priorities, and each sub-buffer is served in a round-robin manner.
 Inverse Linear algorithm – Packets pass \ dropped deterministically (QoS threshold).
 Probabilistic Algorithm – Packets are passes \ dropped based on a probability model:
+
+
+
 ![image](https://github.com/guy-davidi/p4_project/assets/64970907/6ead6c61-7dcb-4617-b4c9-000f3e86948d)
+
+
+
 
 ## Results
 We collected data of the total QoS passed through the switch and performed a competitive analysis of the different algorithms.
