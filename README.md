@@ -4,7 +4,28 @@ This project involved the design and implementation of a software switch using D
 
 ![image](https://github.com/guy-davidi/p4_project/assets/64970907/488ec660-5cd3-40fa-9831-93b9ed30882d)
 
-## Install P4 compiller - p4c_install.sh
+## Methods
+Our Integrated solution is comprised of two main stages:
+
+A packet classifier that can be configured in real-time. The classifier is being loaded to the system in real-time using P4. The classifier assigns a Quality of Service (QoS) value to each packet.
+
+Buffer-overflow management algorithm, Implemented in the NIC’s DPDK driver  (depends on the free buffer space and the packet’s  QoS).
+Default algorithm – Every packet passes.
+Three Buffers Round Robin – The buffer is split into three sub-buffers for handling packets with different priorities, and each sub-buffer is served in a round-robin manner.
+Inverse Linear algorithm – Packets pass \ dropped deterministically (QoS threshold).
+Probabilistic Algorithm – Packets are passes \ dropped based on a probability model:
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/6ead6c61-7dcb-4617-b4c9-000f3e86948d)
+
+## Results
+We collected data of the total QoS passed through the switch and performed a competitive analysis of the different algorithms.
+From our results we obtained, we observe a clear improvement of the default packet forwarding procedure in a high-stress network state.
+Also, The switch can support different communication protocols, which can be configured in real-time
+
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/f611ef90-eecf-4842-bd65-bfd147435d11)
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/23af1b4a-6f13-4675-9b71-b33344151d8e)
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/4dcc7c4d-8476-4ab8-bf11-269e593069cf)
+
+# Install P4 compiller - p4c_install.sh
 ```
 chmod 755 ./scripts/p4cinstall.sh
 ./scripts/p4c_install.sh
@@ -93,28 +114,6 @@ It can be seen that each sample has exact jump of 5 packets with QoS -> "17" tha
 
 ## Wrtting QoS to hdr.ipv4.src_addr = class
 ![image](https://user-images.githubusercontent.com/64970907/223533841-04f6a645-6a93-4692-97ac-1da1a9760678.png)
-
-## Methods
-Our Integrated solution is comprised of two main stages:
-
-A packet classifier that can be configured in real-time. The classifier is being loaded to the system in real-time using P4. The classifier assigns a Quality of Service (QoS) value to each packet.
-
-Buffer-overflow management algorithm, Implemented in the NIC’s DPDK driver  (depends on the free buffer space and the packet’s  QoS).
-Default algorithm – Every packet passes.
-Three Buffers Round Robin – The buffer is split into three sub-buffers for handling packets with different priorities, and each sub-buffer is served in a round-robin manner.
-Inverse Linear algorithm – Packets pass \ dropped deterministically (QoS threshold).
-Probabilistic Algorithm – Packets are passes \ dropped based on a probability model:
-![image](https://github.com/guy-davidi/p4_project/assets/64970907/6ead6c61-7dcb-4617-b4c9-000f3e86948d)
-
-## Results
-We collected data of the total QoS passed through the switch and performed a competitive analysis of the different algorithms.
-From our results we obtained, we observe a clear improvement of the default packet forwarding procedure in a high-stress network state.
-Also, The switch can support different communication protocols, which can be configured in real-time
-
-![image](https://github.com/guy-davidi/p4_project/assets/64970907/f611ef90-eecf-4842-bd65-bfd147435d11)
-![image](https://github.com/guy-davidi/p4_project/assets/64970907/23af1b4a-6f13-4675-9b71-b33344151d8e)
-![image](https://github.com/guy-davidi/p4_project/assets/64970907/4dcc7c4d-8476-4ab8-bf11-269e593069cf)
-
 
 
 
