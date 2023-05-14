@@ -1,6 +1,8 @@
 
 ## Introduction
-This project involved the design and implementation of a software switch using DPDK (Data Plane Development Kit) that is configurable with P4 (Programming Protocol-Independent Packet Processors). 
+This project involved the design and implementation of a software switch using DPDK (Data Plane Development Kit) that is configurable with 
+P4 (Programming Protocol-Independent Packet Processors). 
+
 ![image](https://github.com/guy-davidi/p4_project/assets/64970907/6e39b160-7df7-4856-b7b0-a6a2c92a6da9)
 
 ## Methods
