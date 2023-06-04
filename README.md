@@ -2,7 +2,7 @@
 ## Table of Contents
 - [Introduction](#Introduction)
 - [Methods](#Methods)
-- [Installation](#Install P4 compiller - p4c_install.sh)
+- [Installation](#Install)
 - [License](#license)
 
 ## Introduction
