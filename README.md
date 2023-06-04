@@ -1,4 +1,9 @@
-# DPDK-P4  Configurable Switch with Buffer Overflow Management
+# DPDK-P4: Buffer Overflow Management
+## Table of Contents
+- [Introduction](#Introduction)
+- [Methods](#Methods)
+- [Installation](#Install P4 compiller - p4c_install.sh)
+- [License](#license)
 
 ## Introduction
 This project involved the design and implementation of a software switch using DPDK (Data Plane Development Kit) that is configurable with 
