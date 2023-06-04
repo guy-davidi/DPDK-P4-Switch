@@ -2,7 +2,7 @@
 ## Table of Contents
 - [Introduction](#Introduction)
 - [Methods](#Methods)
-- [Installation](#Install)
+- [Installation](#Installation)
 - [License](#license)
 
 ## Introduction
@@ -37,7 +37,7 @@ Also, The switch can support different communication protocols, which can be con
   <img src="https://github.com/guy-davidi/p4_project/assets/64970907/284ad618-7084-4251-a8d6-a7d49ec45a19" alt="Image Description" />
 </p>
 
-## Install P4 compiller - p4c_install.sh
+## Installation
 ```
 chmod 755 ./scripts/p4cinstall.sh
 ./scripts/p4c_install.sh
