@@ -1,4 +1,4 @@
-# DPDK-P4: Buffer Overflow Management
+# DPDK-P4 Buffer Overflow Management
 ## Table of Contents
 - [Introduction](#Introduction)
 - [Methods](#Methods)
