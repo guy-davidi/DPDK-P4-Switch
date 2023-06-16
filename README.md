@@ -38,40 +38,45 @@ Also, The switch can support different communication protocols, which can be con
 </p>
 
 ## Installation
+  1. clone
+  ```
+  git clone https://github.com/guy-davidi/p4_project
+  ```
+  2. run installtion scripts
 ```
 chmod 755 ./scripts/p4cinstall.sh
 ./scripts/p4c_install.sh
 chmod 755 ./scripts/dpdk_install.sh
 ./scripts/dpdk_install.sh
 ```
-## Build DPDK's Pipeline APP
+  3. Build DPDK's Pipeline APP
 ```cd /home/user/dpdk/examples/pipeline
 mkdir build
 make
 ```
-## DPDK's uses NICs, Bind DPDK driver to device
+  4. DPDK's uses NICs, Bind DPDK driver to device
 ```
 cd /home/user/dpdk/usertools
 sudo ./dpdk-devbind.py -b vfio-pci 0000:01:00.0
 sudo ./dpdk-devbind.py -b vfio-pci 0000:05:00.0
 ```
-## Compilation l2fwd.P4 -> l2fwd.spec (which DPDK's pipeline uses)
+  5. Compilation l2fwd.P4 -> l2fwd.spec (which DPDK's pipeline uses)
 ```
 p4c-dpdk --arch psa l2fwd.p4 -o l2fwd.spec 
 ```
-## In order run l2fwd (example)
+  6. In order run l2fwd (example)
 ```
 sudo su
 cd  ~/p4_project
 sudo ./dpdk-pipeline -c 0x3 -- -s l2fwd.cli
 ```
-## Connecting CLI DPDK-Pipeline APP
+  7. Connecting CLI DPDK-Pipeline APP
 ```
 telnet 0.0.0.0 8086
 pipeline PIPELINE0 stats
 ```
-## In order to add table entries last must be call to 'commit'
-## Note that Class Of Service is given to a packet in addition to egress port.
+  8. In order to add table entries last must be call to 'commit'
+     Note that Class Of Service is given to a packet in addition to egress port.
 ```
 pipeline PIPELINE0 stats
 pipeline PIPELINE0 table ipv4_host add ipv4_host_table.txt
@@ -82,7 +87,7 @@ match 0x0A000000 action send port 0x1 class 1
 match 0x0B652B58 action send port 0x0 class 2
 Table ipv4_host currently has 2 entries.
 ```
-## Showing the stats of the pipeline - output
+  9. Showing the stats of the pipeline - output
 ```
 Input ports:
         Port 0: packets 877005976 bytes 52620358560 empty 14523130228
@@ -101,7 +106,7 @@ Tables:
                 Action send (packets): 48986184
                 Action drop_1 (packets): 0
 ```
-## Read QoS from DPDK-App CLI
+  10. Read QoS from DPDK-App CLI
 ```
 pipeline PIPELINE0 regrd reg_counter_0 0
 ```
