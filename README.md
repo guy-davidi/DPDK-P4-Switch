@@ -9,9 +9,8 @@
 This project involved the design and implementation of a software switch using DPDK (Data Plane Development Kit) that is configurable with 
 P4 (Programming Protocol-Independent Packet Processors). 
 
-<p align="center">
-  <img src="https://github.com/guy-davidi/p4_project/assets/64970907/6e39b160-7df7-4856-b7b0-a6a2c92a6da9" alt="Image Description" />
-</p>
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/900e5c73-8719-4e05-8bbf-b77401e7c2a8)
+
 
 ## Methods
 Our Integrated solution is comprised of two main stages:
@@ -24,18 +23,16 @@ Three Buffers Round Robin – The buffer is split into three sub-buffers for han
 Inverse Linear algorithm – Packets pass \ dropped deterministically (QoS threshold).
 Probabilistic Algorithm – Packets are passes \ dropped based on a probability model:
 
-<p align="center">
-  <img src="https://github.com/guy-davidi/p4_project/assets/64970907/5ecdbee1-341f-4210-8013-1b80c0862189" alt="Image Description" />
-</p>
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/5281b88a-b7b7-466d-be7d-883a431183db)
+
 
 ## Results
 We collected data of the total QoS passed through the switch and performed a competitive analysis of the different algorithms.
 From our results we obtained, we observe a clear improvement of the default packet forwarding procedure in a high-stress network state.
 Also, The switch can support different communication protocols, which can be configured in real-time
 
-<p align="center">
-  <img src="https://github.com/guy-davidi/p4_project/assets/64970907/284ad618-7084-4251-a8d6-a7d49ec45a19" alt="Image Description" />
-</p>
+![image](https://github.com/guy-davidi/p4_project/assets/64970907/a03cbf53-ab58-4a35-a1ab-7a0b5e9fcc66)
+
 
 ## Installation
   1. clone
