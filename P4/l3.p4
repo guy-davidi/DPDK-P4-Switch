@@ -211,4 +211,3 @@ IngressPipeline(Ingress_Parser(), ingress(), Ingress_Deparser()) pipe;
 EgressPipeline(Egress_Parser(), egress(), Egress_Deparser()) ep;
 
 PSA_Switch(pipe, PacketReplicationEngine(), ep, BufferingQueueingEngine()) main;
-
