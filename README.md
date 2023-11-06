@@ -33,7 +33,6 @@ Also, The switch can support different communication protocols, which can be con
 
 ![image](https://github.com/guy-davidi/p4_project/assets/64970907/a03cbf53-ab58-4a35-a1ab-7a0b5e9fcc66)
 
-
 ## Installation
   1. clone
   ```
